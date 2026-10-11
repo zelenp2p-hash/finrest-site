@@ -1,0 +1,693 @@
+<title>ФинРест: результаты клиентов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&family=PT+Mono&display=swap">
+<style>
+/* Layout: отчёт-лента. Шапка и навигация по кейсам закреплены сверху. Каждый кейс: тёмно-зелёная «обложка» с золотыми цифрами и главным графиком, полный разбор раскрывается. Цвета ФинРест: глубокий зелёный и золото */
+:root{
+  --bg:#F7F6F1; --sheet:#FFFFFF; --sheet-2:#F1EEE4; --ink:#16211C; --ink-2:#44524C; --muted:#78837D; --rule:#E2DFD4;
+  --green:#04251E; --green-mid:#0E3A2F; --green-2:#1F6A54; --gold:#B88F45; --gold-hi:#CBA35C; --grey:#BFBDB0;
+  --on-green:#F3F1EA; --on-green-2:#AFC0B7; --red:#A8432F;
+  --serif:'PT Serif',Cambria,Georgia,serif; --sans:'PT Sans',Calibri,'Segoe UI',Arial,sans-serif; --mono:'PT Mono',Consolas,monospace;
+}
+:root{color-scheme:light}
+*{box-sizing:border-box}
+html{scroll-padding-top:120px}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;margin:0}
+.wrap{max-width:880px;margin:0 auto;padding-inline:18px}
+h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.18;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,6vw,48px)}
+h2{font-size:clamp(23px,4.4vw,32px)}
+h3{font-size:19px}
+p{margin:0}
+a{color:inherit}
+.ey{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.muted{color:var(--muted)}
+.lead{font-size:18px;color:var(--ink-2);max-width:62ch}
+
+/* sticky top */
+.top{position:-webkit-sticky;position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--green);color:var(--on-green);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:9px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo img{display:block;height:20px;width:auto}
+.logo img.w{height:15px}
+.bar .contact{color:var(--gold-hi);text-decoration:none;font-size:14px;border-bottom:1px solid currentColor}
+.cnav{display:flex;gap:6px;overflow-x:auto;padding-block:0 10px;scrollbar-width:none}
+.cnav::-webkit-scrollbar{display:none}
+.cnav a{flex:none;text-decoration:none;font-size:13px;color:var(--on-green-2);border:1px solid rgba(203,163,92,.35);border-radius:999px;padding:5px 11px;white-space:nowrap}
+.cnav a b{color:var(--gold-hi);margin-right:4px}
+.cnav a.on{background:var(--gold-hi);color:#04251E;border-color:var(--gold-hi)}
+.cnav a.on b{color:#04251E}
+.cnav a.caps{letter-spacing:.06em;font-weight:700;color:var(--gold-hi)}
+.cnav a.caps.on{color:#04251E}
+
+.cover{background:var(--green);color:var(--on-green);padding-block:34px 44px;position:relative;overflow:hidden}
+.cover .wrap{display:flex;flex-direction:column;gap:18px;position:relative}
+.cover .mark{position:absolute;right:-30px;top:10px;width:230px;opacity:.07;pointer-events:none}
+.cover .ey{color:var(--gold-hi)}
+.cover .lead{color:var(--on-green-2)}
+.cover .full{width:120px;height:auto}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(203,163,92,.4);margin-top:8px}
+.facts div{padding:14px 12px 0 0;display:flex;flex-direction:column;gap:2px;min-width:0}
+.facts b{font-family:var(--serif);font-size:clamp(22px,4.4vw,34px);color:var(--gold-hi);font-variant-numeric:tabular-nums}
+.facts span{font-size:14px;color:var(--on-green-2);line-height:1.35}
+@media (max-width:520px){.facts{grid-template-columns:1fr}.facts div{flex-direction:row;align-items:baseline;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.1)}.facts b{min-width:5.4em}}
+
+section.block{padding-block:44px}
+.head{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+
+.tbl{width:100%;border-collapse:collapse;font-size:15px}
+.tbl th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;font-weight:700;padding:8px 10px 8px 0;border-bottom:2px solid var(--gold)}
+.tbl td{padding:12px 10px 12px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+.tbl td.num{font-family:var(--serif);font-weight:700;color:var(--green-2);font-variant-numeric:tabular-nums}
+.tbl a{text-decoration:none;border-bottom:1px solid var(--gold)}
+.tscroll{overflow-x:auto}
+
+/* case card */
+.cases{display:flex;flex-direction:column;gap:22px;padding-block:8px 40px}
+.case{border-radius:16px;overflow:hidden;background:var(--sheet);border:1px solid var(--rule);min-width:0}
+.case-hd{background:var(--green);color:var(--on-green);padding:22px 20px;display:flex;flex-direction:column;gap:14px;background-image:linear-gradient(135deg,var(--green) 0%,var(--green-mid) 100%)}
+.case-hd .ey{color:var(--gold-hi)}
+.case-hd h2{color:var(--on-green)}
+.pass{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--on-green-2)}
+.pass b{color:var(--on-green);font-weight:700}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.kpi{border-top:1px solid rgba(203,163,92,.45);padding-top:10px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.kpi b{font-family:var(--serif);font-size:30px;line-height:1.1;color:var(--gold-hi);font-variant-numeric:tabular-nums}
+.kpi span{font-size:14px;color:var(--on-green-2);line-height:1.4}
+.case-bd{padding:20px;display:flex;flex-direction:column;gap:22px}
+details.more{border-top:1px solid var(--rule)}
+details.more>summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 20px;font-weight:700;color:var(--green-2)}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::after{content:"";width:10px;height:10px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg);margin-top:-5px;transition:transform .2s}
+details.more[open]>summary::after{transform:rotate(-135deg);margin-top:5px}
+details.more>summary .when-open{display:none}
+details.more[open]>summary .when-open{display:inline}
+details.more[open]>summary .when-closed{display:none}
+.more-bd{padding:0 20px 22px;display:flex;flex-direction:column;gap:24px}
+.fig{display:flex;flex-direction:column;gap:10px;margin:0}
+.fig .t{font-weight:700;font-size:16px}
+.fig .s{font-size:13px;color:var(--muted)}
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.chart text{font-family:var(--sans);font-size:21px;fill:var(--muted)}
+.chart .v{fill:var(--ink);font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--ink-2)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.insight{background:var(--sheet-2);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:12px 14px;color:var(--ink-2);font-size:16px}
+.insight b{color:var(--ink)}
+.done h3{font-size:18px;margin-bottom:6px}
+.done ul{margin:0;padding-left:20px;color:var(--ink-2)}
+.done li{margin:5px 0}
+.done li::marker{color:var(--gold)}
+.shots{display:flex;flex-direction:column;gap:8px}
+.shot{border:1px solid var(--rule);border-radius:6px;background:#fff;padding:6px;cursor:zoom-in;position:relative}
+.shot img{display:block;width:100%;height:auto}
+.shot::after{content:"увеличить";position:absolute;right:6px;bottom:6px;font:11px var(--mono);background:#04251E;color:#F3F1EA;padding:2px 7px;border-radius:4px}
+.shot-cap{font-size:13px;color:var(--muted);font-family:var(--mono);margin-bottom:6px}
+.two{display:grid;grid-template-columns:1fr;gap:26px}
+@media (min-width:760px){.two{grid-template-columns:1fr 1fr}}
+.pn{display:flex;justify-content:space-between;gap:12px;font-size:14px;border-top:1px solid var(--rule);padding-top:14px}
+.pn a{color:var(--green-2);text-decoration:none}
+.soft{font-size:15px;color:var(--muted)}
+.soft a{color:var(--green-2);text-decoration:none;border-bottom:1px solid var(--gold)}
+
+.lb{position:fixed;inset:0;z-index:50;background:rgba(2,15,12,.94);overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 56px) 12px 24px}
+.lb img{display:block;width:1100px;max-width:none;height:auto;background:#fff;border-radius:4px}
+.lb button{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);right:12px;background:#F3F1EA;color:#04251E;border:0;border-radius:6px;padding:8px 16px;font:700 15px var(--sans);cursor:pointer}
+.lb p{color:#AFC0B7;font-size:13px;margin-bottom:10px}
+
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--rule);counter-reset:st}
+.steps li{display:grid;grid-template-columns:44px 1fr;gap:8px;padding:14px 0;border-bottom:1px solid var(--rule);counter-increment:st}
+.steps li::before{content:counter(st);font-family:var(--serif);font-size:24px;color:var(--gold);font-weight:700}
+.steps b{display:block}
+.steps span{color:var(--ink-2);font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.card{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.card ul{margin:0;padding-left:18px;color:var(--ink-2);font-size:15px}
+.card li::marker{color:var(--gold)}
+.card .who{font-size:13px;color:var(--gold);font-weight:700}
+.sub{font-family:var(--serif);font-size:21px;font-weight:700;margin:32px 0 12px}
+.tar td:last-child,.tar th:last-child{text-align:right;white-space:nowrap}
+.band{background:var(--green);color:var(--on-green)}
+.band .lead{color:var(--on-green-2)}
+.band .tbl th{color:var(--on-green-2)}
+.band .tbl td{border-color:rgba(255,255,255,.12);color:var(--on-green-2)}
+.band .tbl td b{color:var(--on-green)}
+.band .tbl td.num{color:var(--gold-hi)}
+.tariffs{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:860px){.tariffs{grid-template-columns:repeat(3,1fr)}}
+.tcard{background:rgba(255,255,255,.04);border:1px solid rgba(203,163,92,.35);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.tcard.hi{border-color:var(--gold-hi);background:rgba(203,163,92,.08)}
+.tname{font-family:var(--serif);font-size:24px;font-weight:700;color:var(--on-green)}
+.tval{color:var(--gold-hi);font-weight:700}
+.tpr{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--on-green);line-height:1.1}
+.tpr span{font-family:inherit;font-size:14px;font-weight:400;color:var(--on-green-2)}
+.tpr span{font-family:system-ui,sans-serif}
+.sums{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:760px){.sums{grid-template-columns:1fr 1fr}}
+.pl{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;align-content:start}
+.pl .t{grid-column:1/-1;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.pl .f{grid-column:1/-1;font-size:16px;line-height:1.35}
+.pl b{display:block;font-family:var(--serif);font-size:26px;color:var(--green-2);line-height:1.1}
+.pl span{font-size:13px;color:var(--ink-2)}
+.pl .pay{grid-column:1/-1;background:var(--green);color:var(--on-green);border-radius:10px;padding:10px 14px;font-size:15px;line-height:1.35}
+.pl .pay em{font-style:normal;color:var(--gold-hi);font-weight:700}
+.tfor{font-size:14px;color:var(--on-green-2)}
+.trow{display:grid;grid-template-columns:110px 1fr;gap:10px;border-top:1px solid rgba(255,255,255,.1);padding-top:9px}
+.trow span{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-hi);font-weight:700;line-height:1.5}
+.trow p{font-size:15px;color:var(--on-green)}
+.tex{font-size:14px;color:var(--on-green-2);margin-top:auto;padding-top:6px}
+.tex a{color:var(--gold-hi);text-decoration:none;border-bottom:1px solid currentColor}
+.band .note{color:var(--on-green-2);font-size:14px;margin-top:12px}
+
+.contact-block{padding-block:44px 56px;display:flex;flex-direction:column;gap:14px}
+.tg{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.tg a.handle{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--green-2);text-decoration:none;border-bottom:2px solid var(--gold)}
+.tg kbd{font-family:var(--mono);background:var(--sheet);border:1px solid var(--gold);padding:3px 10px;border-radius:6px;color:var(--ink)}
+.copy{background:var(--green);border:0;color:var(--on-green);border-radius:6px;padding:6px 12px;font:14px var(--sans);cursor:pointer}
+.copy:focus-visible,.shot:focus-visible,summary:focus-visible,.cnav a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+footer{background:var(--green);color:var(--on-green-2);font-size:13px;padding-block:22px}
+footer .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+footer img{height:36px;width:auto}
+@media (prefers-reduced-motion:reduce){details.more>summary::after{transition:none}}
+
+.vals{display:flex;flex-direction:column;gap:0;border-top:2px solid var(--gold)}
+.val{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:18px 0;border-bottom:1px solid var(--rule)}
+.val .n{font-family:var(--serif);font-size:34px;font-weight:700;color:var(--gold);line-height:1}
+.val b{display:block;font-size:20px;margin-bottom:4px}
+.val p{color:var(--ink-2);font-size:16px}
+.you{background:var(--green);color:var(--on-green);border-radius:12px;padding:16px 18px;font-size:16px;margin-top:16px}
+.you b{color:var(--gold-hi)}
+.story{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:760px){.story{grid-template-columns:1fr 1fr}}
+.story .lab{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}
+.story p,.story li{color:var(--ink-2);font-size:16px}
+.story ul{margin:0;padding-left:20px}
+.story li{margin:3px 0}
+.story li::marker{color:var(--gold)}
+.tl{margin:12px 0 0;padding-left:20px}
+.tl li{margin:6px 0;font-size:16px}
+.tl li::marker{color:var(--gold)}
+.vl2{list-style:none;margin:0;padding:0;border-top:2px solid var(--gold)}
+.vl2 li{padding:10px 0;border-bottom:1px solid var(--rule);line-height:1.3}
+.vl2 b{display:block;font-size:17px}
+.vl2 span{font-size:14px;color:var(--ink-2)}
+.mn{display:grid;grid-template-columns:1fr;gap:10px}
+@media (min-width:760px){.mn{grid-template-columns:1fr 1fr}}
+.mt{display:flex;flex-direction:column;gap:6px;padding:14px 16px;border:1px solid var(--rule);border-left:4px solid var(--gold);border-radius:14px;background:#fff;text-decoration:none;color:var(--ink);min-width:0;box-shadow:0 1px 3px rgba(4,37,30,.06);transition:transform .15s}
+.mt:active{transform:scale(.98)}
+.mt .ml{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700;line-height:1.3}
+.mt .pain{font-family:var(--serif);font-size:19px;font-weight:700;line-height:1.25;color:var(--ink)}
+.mt .res{font-size:14px;color:var(--green-2);line-height:1.35;display:flex;gap:6px;align-items:baseline}
+.mt .ok{font-weight:700}
+.mt .go{margin-top:4px;font-size:14px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:6px}
+.mt .go i{font-style:normal;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--green);color:var(--gold-hi);font-size:13px}
+.mlinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.mlinks a{flex:1 1 auto;text-align:center;text-decoration:none;font-size:14px;font-weight:700;color:var(--green);border:1.5px solid var(--green);border-radius:999px;padding:9px 12px}
+.mlinks a i{font-style:normal;color:var(--gold)}
+#cennost.vcard{background:#EAF1EC;border-radius:20px;padding:22px 18px 18px;margin:20px 0 6px}
+@media (min-width:760px){#cennost.vcard{padding:28px 28px 22px}}
+#cennost .vl2{border-top:0}
+#cennost .vl2 li{display:grid;grid-template-columns:26px 1fr;column-gap:8px;border-bottom:1px solid rgba(4,37,30,.1)}
+#cennost .vl2 li:last-child{border-bottom:0}
+#cennost .vl2 li::before{content:"✓";grid-row:1/3;width:22px;height:22px;border-radius:50%;background:var(--green);color:var(--gold-hi);font-size:12px;font-weight:700;display:grid;place-items:center;margin-top:2px}
+#menu{border-top:1px solid var(--rule);margin-top:18px}
+/* light tariff cards on dark band */
+.band .tcard{background:#FAF8F3;border:1px solid #FAF8F3;color:var(--ink);box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.band .tcard .tname,.band .tcard .tpr{color:var(--ink)}
+.band .tcard .tval{color:var(--gold)}
+.band .tcard .tpr span,.band .tcard .tex{color:var(--ink-2)}
+.band .tcard .tl li{color:var(--ink-2)}
+.band .tcard .tex a{color:var(--green-2)}
+.band .tcard.hi{background:#fff;border:2px solid var(--gold-hi);position:relative;margin-top:10px}
+.band .tcard.hi::before{content:"Топ тариф";position:absolute;top:-12px;left:16px;background:var(--gold-hi);color:var(--green);font-size:12px;font-weight:700;letter-spacing:.04em;padding:3px 10px;border-radius:999px}
+details.open1{border-top:0}
+.pn.pn-out{padding:14px 20px 18px}
+details.open1>summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;font-weight:700;font-size:15px;color:var(--green);border-top:1px solid var(--rule);background:var(--sheet)}
+details.open1>summary::-webkit-details-marker{display:none}
+details.open1>summary .sl{border-bottom:1.5px solid var(--gold-hi);padding-bottom:1px}
+details.open1>summary .pm{position:relative;flex:none;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--gold);transition:background .2s}
+details.open1>summary .pm::before,details.open1>summary .pm::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;background:var(--gold);transform:translate(-50%,-50%);transition:transform .2s}
+details.open1>summary .pm::after{transform:translate(-50%,-50%) rotate(90deg)}
+details.open1[open]>summary .pm{background:var(--gold)}
+details.open1[open]>summary .pm::before{background:#fff}
+details.open1[open]>summary .pm::after{background:#fff;transform:translate(-50%,-50%) rotate(0)}
+details.open1>summary .when-open{display:none}
+details.open1[open]>summary .when-open{display:inline}
+details.open1[open]>summary .when-closed{display:none}
+/* gallery */
+.gal{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 16px 26px;scroll-padding:0 16px;align-items:flex-start;scrollbar-width:none;-webkit-overflow-scrolling:touch;max-width:1080px;margin:0 auto}
+.gal::-webkit-scrollbar{display:none}
+.gal>.case{flex:0 0 88%;scroll-snap-align:start;box-shadow:0 4px 14px rgba(4,37,30,.10)}
+@media (min-width:760px){.gal>.case{flex-basis:560px}}
+.gctl{display:flex;align-items:center;gap:10px;margin-top:6px}
+.ga{flex:none;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--green);background:transparent;color:var(--green);font-size:22px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0 0 3px}
+.ga:disabled{opacity:.3}
+.gcount{font-weight:700;font-size:14px;color:var(--green);min-width:42px}
+.gdots{flex:1;display:flex;gap:6px;justify-content:center}
+.gd{width:8px;height:8px;border-radius:50%;border:0;padding:0;background:var(--rule);cursor:pointer}
+.gd.on{background:var(--gold);width:22px;border-radius:4px}
+</style>
+
+<div class="top"><div class="wrap">
+  <div class="bar">
+    <a class="logo" href="#top" aria-label="ФинРест"><img src="{{IMG:logo/emblem.png}}" alt=""><img class="w" src="{{IMG:logo/word.png}}" alt="ФинРест"></a>
+    <a class="contact" href="{{TG}}" target="_blank" rel="noopener">Связаться</a>
+  </div>
+  <nav class="cnav" aria-label="Разделы">
+    <a href="#cennost">Что вы получите</a>
+    <a href="#k6" data-case class="caps">ИНВЕНТАРИЗАЦИИ</a>
+<a href="#k1" data-case><b>Кейс 1.</b>4 ресторана</a>
+    <a href="#k2" data-case><b>Кейс 2.</b>8 кофеен</a>
+    <a href="#k3" data-case><b>Кейс 3.</b>1 ресторан</a>
+    <a href="#k4" data-case><b>Кейс 4.</b>Кофейня в ТЦ</a>
+    <a href="#k5" data-case><b>Кейс 5.</b>Новый клиент</a>
+    <a href="#itog">Итог</a>
+    <a href="#tarify">Тарифы</a>
+    <a href="#kak">Как работаем</a>
+  </nav>
+</div></div>
+
+<main id="top">
+<div class="cover"><img class="mark" src="{{IMG:logo/emblem.png}}" alt=""><div class="wrap">
+  <img class="full" src="{{IMG:logo/full.png}}" alt="ФинРест">
+  <p class="ey">Калькуляция и учёт заведений в iiko</p>
+  <h1>Каждая цифра вашего ресторана станет понятной</h1>
+  <p class="lead">Вы точно знаете, сколько зарабатываете, где теряете деньги и что сделать, чтобы зарабатывать больше. Учёт в порядке, а цифры на простом языке, без бухгалтерских терминов.</p>
+  <div class="facts">
+    <div><b>30+</b><span>заведений уже работают с нами</span></div>
+    <div><b>50+ млн ₽</b><span>выручки в месяц наши клиенты видят прозрачно</span></div>
+    <div><b>9+ лет</b><span>в ресторанном бизнесе изнутри</span></div>
+  </div>
+</div></div>
+
+<div class="wrap">
+<section class="block vcard" id="cennost">
+  <div class="head"><p class="ey">Что вы получите</p><h2>Что изменится с первого месяца</h2></div>
+  <ul class="vl2">
+    <li><b>Вы спокойны за учёт</b><span>каждый документ на месте, ни одной траты без чека</span></li>
+    <li><b>Вы меньше теряете</b><span>видите списания, недостачи, лишнюю себестоимость и деньги на складах</span></li>
+    <li><b>Вы знаете свою прибыль</b><span>до 15 числа: сколько заработали и сколько можно забрать себе</span></li>
+    <li><b>Вы управляете в моменте</b><span>расходы и себестоимость видны сейчас, а не в конце месяца</span></li>
+    <li><b>Вы растёте на реальных цифрах</b><span>решения без «не вижу» и «не понимаю»</span></li>
+  </ul>
+  <p class="soft" style="margin-top:10px;font-size:14px">Вам ничего не нужно менять: всё в iiko, где уже работает ваш ресторан.</p>
+</section>
+<section class="block" id="menu">
+  <div class="head"><p class="ey">Кейсы клиентов</p><h2>Узнаёте свою ситуацию?</h2><p class="lead" style="font-size:16px">С этим пришли наши клиенты. Нажмите на карточку и посмотрите, что у них изменилось.</p></div>
+  <div class="mn">
+    <a class="mt" href="#k6" data-case><span class="ml">ИНВЕНТАРИЗАЦИИ · бар кофейни</span><span class="pain">«Инвентаризация уходит то в недостачи, то в излишки»</span><span class="res"><span class="ok">✓</span>владелец увидел 42 тыс ₽ ошибок за итогом «в ноль»</span><span class="go">Смотреть, что изменилось <i>→</i></span></a>
+    <a class="mt" href="#k1" data-case><span class="ml">Кейс 1 · 4 ресторана</span><span class="pain">«Деньги уходят, а куда, непонятно: чеков нет»</span><span class="res"><span class="ok">✓</span>трат без чеков стало в 3,4 раза меньше</span><span class="go">Смотреть, что изменилось <i>→</i></span></a>
+    <a class="mt" href="#k2" data-case><span class="ml">Кейс 2 · 8 кофеен</span><span class="pain">«Выручка есть, а прибыли нет»</span><span class="res"><span class="ok">✓</span>прибыль сети выросла в 6,8 раза за полгода</span><span class="go">Смотреть, что изменилось <i>→</i></span></a>
+    <a class="mt" href="#k3" data-case><span class="ml">Кейс 3 · 1 ресторан</span><span class="pain">«Прибыль в отчётах скачет, расходы разнесены неверно»</span><span class="res"><span class="ok">✓</span>прибыль +27% при росте выручки на 7%</span><span class="go">Смотреть, что изменилось <i>→</i></span></a>
+    <a class="mt" href="#k4" data-case><span class="ml">Кейс 4 · Кофейня в ТЦ</span><span class="pain">«Не знаю, на чём в меню я зарабатываю»</span><span class="res"><span class="ok">✓</span>+58 тыс ₽ в месяц на той же выручке</span><span class="go">Смотреть, что изменилось <i>→</i></span></a>
+    <a class="mt" href="#k5" data-case><span class="ml">Кейс 5 · Новый клиент</span><span class="pain">«Отчёту нельзя верить»</span><span class="res"><span class="ok">✓</span>отчёт очищен от 1,2 млн ₽ ошибочных записей</span><span class="go">Смотреть, что изменилось <i>→</i></span></a>
+  </div>
+  <div class="mlinks">
+    <a href="#itog">Окупается ли это? <i>→</i></a>
+    <a href="#tarify">Тарифы от 30 тыс ₽ <i>→</i></a>
+    <a href="#kak">Что нужно от вас <i>→</i></a>
+  </div>
+</section>
+
+
+</div>
+<div class="wrap">
+<section class="block" id="keisy" style="padding-bottom:6px">
+  <div class="head"><p class="ey">Кейсы</p><h2>Что было у клиентов и что стало</h2><p class="lead" style="font-size:16px">Листайте карточки вбок. Внутри каждой: с чем пришёл владелец, что изменилось и полный разбор с графиками из iiko.</p></div>
+  <div class="gctl"><button type="button" class="ga" id="gPrev" aria-label="Предыдущий кейс">‹</button><span class="gcount" id="gCount">1 / 6</span><div class="gdots"><button type="button" class="gd" data-i="0" aria-label="Инвентаризации"></button><button type="button" class="gd" data-i="1" aria-label="Кейс 1"></button><button type="button" class="gd" data-i="2" aria-label="Кейс 2"></button><button type="button" class="gd" data-i="3" aria-label="Кейс 3"></button><button type="button" class="gd" data-i="4" aria-label="Кейс 4"></button><button type="button" class="gd" data-i="5" aria-label="Кейс 5"></button></div><button type="button" class="ga" id="gNext" aria-label="Следующий кейс">›</button></div>
+</section>
+</div>
+<div class="gal" id="gal">
+<article class="case" id="k6">
+  <div class="case-hd">
+    <p class="ey">ИНВЕНТАРИЗАЦИИ · бар кофейни</p>
+    <h2>Итог «в ноль», а внутри 42 тыс ₽ ошибок</h2>
+    <div class="pass"><span>Дата: <b>сентябрь 2026</b></span><span>Позиций: <b>118</b></span><span>Данные: <b>сличительная ведомость, движение товара</b></span></div>
+    <div class="kpis">
+      <div class="kpi"><b>+2,3 тыс ₽</b><span>итог инвентаризации: выглядит идеально</span></div>
+      <div class="kpi"><b>42 тыс ₽</b><span>ошибок внутри: 22,2 тыс излишков и 19,9 тыс недостач</span></div>
+      <div class="kpi"><b>5</b><span>причин расхождений найдено</span></div>
+    </div>
+  </div>
+  <details class="open1"><summary><span class="sl"><span class="when-closed">Что было и что изменилось</span><span class="when-open">Свернуть</span></span><span class="pm" aria-hidden="true"></span></summary>
+  <div class="case-bd">
+    <div class="story"><div><p class="lab">Что было</p><p>Итог инвентаризации бара: +2 тыс ₽. Кажется, всё в порядке.</p></div><div><p class="lab">Что изменилось</p><ul><li>Каждая из 118 позиций разобрана, причина расхождения понятна</li><li>Владелец видит 5 причин расхождений</li><li>У бара 4 правила, и ошибки не повторяются</li></ul></div></div>
+    <figure class="fig"><p class="t">Откуда расхождения на баре, ₽</p><div id="c6a"></div></figure>
+    <p class="insight">Итог инвентаризации почти нулевой, а внутри ошибки в обе стороны. Вы видите причину по каждой позиции, а не только итог.</p>
+  </div>
+  <details class="more"><summary><span class="when-closed">Полный разбор</span><span class="when-open">Свернуть разбор</span></summary><div class="more-bd">
+    <div class="done"><h3>Что стоит за цифрами</h3><ul>
+      <li><b>Покупки в магазине без накладной.</b> Товар есть на полке, но не заведён в iiko: «излишек» 9,6 тыс ₽</li>
+      <li><b>Перенос с кухни на бар без перемещения.</b> Лимоны, мёд, молоко числятся на кухне, а лежат на баре</li>
+      <li><b>Молоко и кофе.</b> Недостача копится третью инвентаризацию подряд: −62 л молока и −3,6 кг кофе</li>
+      <li><b>Десерт приходит на один склад, а продаётся с другого.</b> На одном складе минус, на другом плюс</li>
+      <li><b>Модификатор списывает не тот товар.</b> «Без коровьего молока» списывает безлактозное</li>
+    </ul></div>
+    <p class="insight">Та же картина в сети из 8 точек: за полгода недостачи 2,31 млн ₽ и излишки 2,34 млн ₽. В сумме почти ноль, но это <b>4,6 млн ₽ товара, учтённого не там</b>. Пока это не разобрано, по инвентаризации нельзя понять, воруют ли у вас.</p>
+    <div class="done"><h3>Что вы получаете после разбора</h3><ul>
+      <li>Список позиций с причиной каждого расхождения</li>
+      <li>Инструкцию для бара и кухни: что вносить и когда</li>
+      <li>Контроль проблемных позиций на следующей инвентаризации</li>
+    </ul></div>
+    <p class="soft">Пришлите сличительную ведомость вашей последней инвентаризации, и вы увидите, что за ней стоит. <a href="{{TG}}" target="_blank" rel="noopener">Написать в Telegram</a></p>
+  </div></details>
+  </details>
+</article>
+<article class="case" id="k1">
+  <div class="case-hd">
+    <p class="ey">Кейс 1 · 4 ресторана, сеть</p>
+    <h2>Деньги перестали уходить без чеков</h2>
+    <div class="pass"><span>С нами: <b>с октября 2025</b></span><span>Точек: <b>4, одна открылась в июне</b></span><span>Данные: <b>ОПиУ и баланс iiko</b></span></div>
+    <div class="kpis">
+      <div class="kpi"><b>в 3,4 раза</b><span>меньше трат без чеков: 1,95 → 0,57 млн ₽ за январь-август</span></div>
+      <div class="kpi"><b>+21%</b><span>прибыль от основной деятельности: 30,8 → 37,1 млн ₽</span></div>
+      <div class="kpi"><b>×2,4</b><span>собственный капитал: 9,3 → 22,1 млн ₽</span></div>
+    </div>
+  </div>
+  <details class="open1"><summary><span class="sl"><span class="when-closed">Что было и что изменилось</span><span class="when-open">Свернуть</span></span><span class="pm" aria-hidden="true"></span></summary>
+  <div class="case-bd">
+    <div class="story"><div><p class="lab">Что было</p><p>Сотрудники платили с корпоративных карт и теряли чеки. До 400-500 тыс ₽ в месяц уходило, и никто не знал, на что. А ещё каждый день понемногу списывалось пиво, со слов барменов.</p></div><div><p class="lab">Что изменилось</p><ul><li>Каждый чек теперь фотографируют в бот сразу после покупки</li><li>Траты без документов видны в отчёте отдельной строкой</li><li>Владелец узнал, что пиво списывалось из-за неисправного оборудования: 500+ тыс ₽ в год</li><li>Все 4 ресторана видны в одной системе iiko Chain</li></ul></div></div>
+    <figure class="fig"><p class="t">Траты с карт и счёта без документов, тыс ₽ в месяц</p><div id="c1a"></div><p class="s">Январь 2025 - август 2026. Источник: ОПиУ iiko, статья «Потерянные чеки»</p></figure>
+    <p class="insight">Серые столбцы: до нас, до 525 тыс ₽ в месяц без документов. Зелёные: с нами, к лету 20-65 тыс ₽.</p>
+  </div>
+  <details class="more"><summary><span class="when-closed">Полный разбор: ещё 3 графика и выписки из iiko</span><span class="when-open">Свернуть разбор</span></summary><div class="more-bd">
+    <div class="two">
+      <figure class="fig"><p class="t">Выручка, млн ₽</p><div id="c1b"></div></figure>
+      <figure class="fig"><p class="t">Прибыль от основной деятельности, млн ₽</p><div id="c1c"></div></figure>
+    </div>
+    <p class="insight">Выручка выросла на 39%, прибыль на 21%: часть роста ушла на открытие новой точки. Этот разрыв видно только тогда, когда расходы разнесены по точкам.</p>
+    <figure class="fig"><p class="t">Прибыль от основной деятельности по точкам, млн ₽, 2026</p><div id="c1d"></div><p class="s">Январь не показан: тогда учёт ещё не был разделён по точкам</p></figure>
+    <p class="insight">Каждая точка видна отдельно. Новая точка вышла в плюс на <b>второй месяц</b>, а одна из старых в феврале ушла в минус 1,6 млн ₽. В общей сумме по сети это бы потерялось.</p>
+    <div class="shots">
+      <p class="shot-cap">ОПиУ iiko 2025, «Потерянные чеки» по месяцам</p><div class="shot"><img src="{{IMG:shots/abdula_2025.png}}" alt="ОПиУ 2025, строка Итого потерянные чеки по месяцам"></div>
+      <p class="shot-cap">ОПиУ iiko 2026, итог по той же статье</p><div class="shot" style="max-width:300px"><img src="{{IMG:shots/abdula_2026.png}}" alt="ОПиУ 2026, итог 572 167 рублей"></div>
+      <p class="shot-cap">Балансовый отчёт iiko, январь-август 2026</p><div class="shot"><img src="{{IMG:shots/abdula_kapital.png}}" alt="Баланс 2026: денежные средства и капитал по месяцам"></div>
+    </div>
+  </div></details>
+  </details>
+</article>
+<article class="case" id="k2">
+  <div class="case-hd">
+    <p class="ey">Кейс 2 · 8 кофеен, сеть</p>
+    <h2>Владелец увидел, какие точки кормят сеть, а какие тянут вниз</h2>
+    <div class="pass"><span>Период: <b>март-август 2026</b></span><span>Точек: <b>8</b></span><span>Данные: <b>ОПиУ, баланс, средний чек</b></span></div>
+    <div class="kpis">
+      <div class="kpi"><b>×6,8</b><span>прибыль от основной деятельности: 0,38 → 2,61 млн ₽ в месяц</span></div>
+      <div class="kpi"><b>+3,4 млн ₽</b><span>капитал: из минуса 0,65 млн в плюс 2,73 млн</span></div>
+      <div class="kpi"><b>+33%</b><span>чеков в месяц: 11 405 → 15 170</span></div>
+    </div>
+  </div>
+  <details class="open1"><summary><span class="sl"><span class="when-closed">Что было и что изменилось</span><span class="when-open">Свернуть</span></span><span class="pm" aria-hidden="true"></span></summary>
+  <div class="case-bd">
+    <div class="story"><div><p class="lab">Что было</p><p>Сеть росла, а прибыли почти не было: в марте 0,38 млн ₽ при выручке 6,5 млн. Часть филиалов работала в минус, а собственник открывал новые точки в надежде увеличить прибыль.</p></div><div><p class="lab">Что изменилось</p><ul><li>Доходы и расходы видны по каждой точке</li><li>Убыточные точки на виду, решение о закрытии принято на цифрах</li><li>То, что работает, перенесено в новые точки</li></ul></div></div>
+    <figure class="fig"><p class="t">Прибыль от основной деятельности, млн ₽ в месяц</p><div id="c2b"></div></figure>
+    <p class="insight">Выручка выросла на 51%, а прибыль в 6,8 раза. Так бывает, когда общие расходы сети стоят на месте: каждая новая продажа почти целиком идёт в прибыль.</p>
+  </div>
+  <details class="more"><summary><span class="when-closed">Полный разбор: ещё 4 графика</span><span class="when-open">Свернуть разбор</span></summary><div class="more-bd">
+    <figure class="fig"><p class="t">Выручка, млн ₽ в месяц</p><div id="c2a"></div></figure>
+    <figure class="fig"><p class="t">Сколько заработали точки и сколько стоят общие расходы сети, млн ₽</p><div id="c2c"></div></figure>
+    <p class="insight">В марте точки едва покрывали расходы «офиса». В августе зарабатывают <b>в 2,5 раза больше</b>.</p>
+    <figure class="fig"><p class="t">Из каждых 100 ₽ выручки</p><div id="c2d"></div></figure>
+    <figure class="fig"><p class="t">Доля зарплаты в выручке точки, %</p><div id="c2e"></div></figure>
+    <p class="insight">Две крупные точки тратят на персонал 26% выручки против 17% у остальных. Это самый большой резерв прибыли в сети, и собственник увидел его в цифрах.</p>
+  </div></details>
+  </details>
+</article>
+<article class="case" id="k3">
+  <div class="case-hd">
+    <p class="ey">Кейс 3 · 1 ресторан, 4 млн ₽ выручки в месяц</p>
+    <h2>Прибыль растёт быстрее выручки</h2>
+    <div class="pass"><span>Период: <b>январь-август 2026</b></span><span>Данные: <b>ОПиУ и баланс iiko</b></span></div>
+    <div class="kpis">
+      <div class="kpi"><b>+27%</b><span>прибыль от основной деятельности при выручке +7%</span></div>
+      <div class="kpi"><b>28 ₽</b><span>прибыли с каждых 100 ₽ выручки</span></div>
+      <div class="kpi"><b>+1,3 млн ₽</b><span>собственный капитал: 2,08 → 3,39 млн ₽</span></div>
+    </div>
+  </div>
+  <details class="open1"><summary><span class="sl"><span class="when-closed">Что было и что изменилось</span><span class="when-open">Свернуть</span></span><span class="pm" aria-hidden="true"></span></summary>
+  <div class="case-bd">
+    <div class="story"><div><p class="lab">Что было</p><p>Выручка росла, а прибыль скакала от месяца к месяцу: от 0,7 до 1,5 млн ₽, и было непонятно почему.</p></div><div><p class="lab">Что изменилось</p><ul><li>Отчёт о прибыли у владельца каждый месяц до 15 числа</li><li>По инвентаризациям видно, где реальная недостача, а где ошибка учёта</li></ul></div></div>
+    <figure class="fig"><p class="t">Прибыль от основной деятельности, млн ₽</p><div id="c3a"></div><div class="legend"><span><i style="background:var(--grey)"></i>январь-апрель, в среднем 1,0 млн</span><span><i style="background:var(--green-2)"></i>май-август, в среднем 1,27 млн</span></div></figure>
+  </div>
+  <details class="more"><summary><span class="when-closed">Полный разбор: ещё 2 графика и выписки из iiko</span><span class="when-open">Свернуть разбор</span></summary><div class="more-bd">
+    <div class="two">
+      <figure class="fig"><p class="t">Из каждых 100 ₽ выручки</p><div id="c3b"></div></figure>
+      <figure class="fig"><p class="t">Собственный капитал, млн ₽</p><div id="c3c"></div></figure>
+    </div>
+    <p class="insight">28 ₽ прибыли с каждых 100 ₽ выручки до налогов и дивидендов. Для ресторана это сильный результат, и собственник видит его каждый месяц до 15 числа.</p>
+    <div class="shots">
+      <p class="shot-cap">ОПиУ iiko, январь-август 2026</p><div class="shot"><img src="{{IMG:shots/privale.png}}" alt="ОПиУ: выручка и прибыль по месяцам"></div>
+      <p class="shot-cap">Балансовый отчёт iiko, январь-август 2026</p><div class="shot"><img src="{{IMG:shots/privale_kapital.png}}" alt="Баланс: деньги и капитал по месяцам"></div>
+    </div>
+  </div></details>
+  </details>
+</article>
+<article class="case" id="k4">
+  <div class="case-hd">
+    <p class="ey">Кейс 4 · Кофейня в ТЦ</p>
+    <h2>Каждый месяц +58 тыс ₽ на той же выручке</h2>
+    <div class="pass"><span>Период: <b>январь-август 2026</b></span><span>Формат: <b>кофейня по франшизе</b></span><span>Данные: <b>ОПиУ, баланс, продажи по блюдам</b></span></div>
+    <div class="kpis">
+      <div class="kpi"><b>+58 тыс ₽</b><span>маржи каждый месяц при той же выручке</span></div>
+      <div class="kpi"><b>×2,1</b><span>прибыль от основной деятельности: 36 → 77 тыс ₽ в месяц</span></div>
+      <div class="kpi"><b>×4,5</b><span>капитал: 53 → 236 тыс ₽</span></div>
+    </div>
+  </div>
+  <details class="open1"><summary><span class="sl"><span class="when-closed">Что было и что изменилось</span><span class="when-open">Свернуть</span></span><span class="pm" aria-hidden="true"></span></summary>
+  <div class="case-bd">
+    <div class="story"><div><p class="lab">Что было</p><p>Себестоимость съедала 33-35% выручки. Владелица не знала, какие позиции меню почти не приносят денег.</p></div><div><p class="lab">Что изменилось</p><ul><li>Себестоимость и наценка видны по каждой позиции</li><li>Владелица увидела, какие напитки и десерты невыгодны</li><li>После смены меню и поставщиков себестоимость под контролем каждый месяц</li></ul></div></div>
+    <figure class="fig"><p class="t">Фудкост, % от выручки</p><div id="c4a"></div></figure>
+    <p class="insight">Себестоимость разобрана по каждой позиции меню. После смены меню в мае фудкост опустился с 33-35% до 25%: это <b>58 тыс ₽ валовой прибыли каждый месяц</b>.</p>
+  </div>
+  <details class="more"><summary><span class="when-closed">Полный разбор: ещё 2 графика и выписки из iiko</span><span class="when-open">Свернуть разбор</span></summary><div class="more-bd">
+    <div class="two">
+      <figure class="fig"><p class="t">Прибыль от основной деятельности, тыс ₽</p><div id="c4b"></div></figure>
+      <figure class="fig"><p class="t">Собственный капитал, тыс ₽</p><div id="c4c"></div></figure>
+    </div>
+    <div class="done"><h3>Что ещё увидела владелица</h3><ul>
+      <li>Комиссия банка за эквайринг не начислялась: прибыль в отчёте была завышена на 60 тыс ₽</li>
+      <li>379 тыс ₽ закупок с карты без чеков, часть похожа на личные траты</li>
+    </ul></div>
+    <div class="shots">
+      <p class="shot-cap">ОПиУ iiko, январь-август 2026</p><div class="shot"><img src="{{IMG:shots/treddy.png}}" alt="ОПиУ кофейни по месяцам"></div>
+      <p class="shot-cap">Балансовый отчёт iiko, январь-август 2026</p><div class="shot"><img src="{{IMG:shots/treddy_kapital.png}}" alt="Баланс кофейни по месяцам"></div>
+    </div>
+  </div></details>
+  </details>
+</article>
+<article class="case" id="k5">
+  <div class="case-hd">
+    <p class="ey">Кейс 5 · Новый клиент, ресторан</p>
+    <h2>Что вы увидите в первые три месяца</h2>
+    <div class="pass"><span>Период: <b>первые 3 месяца работы</b></span><span>Данные: <b>ОПиУ, банк, карточки счетов</b></span></div>
+    <div class="kpis">
+      <div class="kpi"><b>1,2 млн ₽</b><span>записей, которые искажали отчёт</span></div>
+      <div class="kpi"><b>−0,49 → +1,09</b><span>прибыль от основной деятельности, млн ₽: первый месяц → второй</span></div>
+    </div>
+  </div>
+  <details class="open1"><summary><span class="sl"><span class="when-closed">Что было и что изменилось</span><span class="when-open">Свернуть</span></span><span class="pm" aria-hidden="true"></span></summary>
+  <div class="case-bd">
+    <div class="story"><div><p class="lab">Что было</p><p>Новый клиент. В учёте накопились записи, из-за которых отчёт показывал не то, что происходит на самом деле.</p></div><div><p class="lab">Что изменилось</p><ul><li>Расчётные счета сходятся с банком до рубля</li><li>Все накладные на месте, авансы поставщикам закрыты</li><li>Каждый платёж попадает в свою статью</li></ul></div></div>
+    <figure class="fig"><p class="t">Что всплыло при проверке учёта, тыс ₽</p><div id="c5a"></div></figure>
+    <p class="insight">Пока такие записи не исправлены, собственник принимает решения по неверным цифрам. Обычно вы видите их уже в первые недели работы.</p>
+  </div>
+  <details class="more"><summary><span class="when-closed">Полный разбор</span><span class="when-open">Свернуть разбор</span></summary><div class="more-bd">
+    <figure class="fig"><p class="t">Прибыль от основной деятельности, млн ₽</p><div id="c5b"></div></figure>
+  </div></details>
+  </details>
+</article>
+</div>
+<div class="wrap">
+<section class="block" id="itog">
+  <div class="head"><p class="ey">Итог по кейсам</p><h2>Что получили клиенты и во сколько им это обошлось</h2></div>
+  <div class="sums">
+    <div class="pl"><p class="t">4 ресторана · тариф «Финдиректор»</p><p class="f">Увидели 400-500 тыс ₽ в месяц трат без чеков и 500+ тыс ₽ в год потерь на пиве</p>
+      <div><b>+39%</b><span>выручка</span></div><div><b>+6,3 млн ₽</b><span>прибыли за январь-август</span></div>
+      <p class="pay">Вложение в нашу команду: <em>176 тыс ₽</em> в месяц за всю сеть. Прибыль выросла в 4,5 раза больше вложения</p></div>
+    <div class="pl"><p class="t">Кофейня в ТЦ · тариф «Учёт»</p><p class="f">Увидели невыгодные позиции меню</p>
+      <div><b>35% → 25%</b><span>себестоимость</span></div><div><b>×2</b><span>прибыль: +41 тыс ₽ в месяц</span></div>
+      <p class="pay">Вложение: <em>30 тыс ₽</em> в месяц. Прибавка к прибыли больше, чем стоит учёт</p></div>
+    <div class="pl"><p class="t">8 кофеен · тариф «Управление»</p><p class="f">Увидели точки, которые тянули сеть в минус</p>
+      <div><b>+51%</b><span>выручка</span></div><div><b>×6,8</b><span>прибыль: +2,2 млн ₽ в месяц</span></div>
+      <p class="pay">Вложение: <em>216 тыс ₽</em> в месяц за всю сеть. Окупилось в первый же месяц: прибыль выросла на 0,8 млн ₽</p></div>
+    <div class="pl"><p class="t">Инвентаризация бара</p><p class="f">За итогом «в ноль» увидели <strong>42 тыс ₽</strong> ошибок учёта</p>
+      <p class="pay">Одна инвентаризация показала больше, чем стоит месяц учёта: <em>35 тыс ₽</em></p></div>
+  </div>
+  <p class="soft" style="margin-top:12px;font-size:14px">Указана фактическая стоимость нашей работы у этих клиентов</p>
+</section>
+</div>
+<div class="band" id="tarify"><div class="wrap"><section class="block">
+  <div class="head"><p class="ey">Тарифы</p><h2>Выберите, сколько контроля вам нужно</h2><p class="lead">Для сетей скидки до 20%. Переезд сети в iiko Chain входит в тариф.</p></div>
+  <div class="tariffs">
+    <div class="tcard"><p class="tname">Тариф «Учёт»</p><p class="tval">Порядок и ответ на вопрос «где прибыль»</p><p class="tpr">от 30 тыс ₽ <span>в месяц за заведение</span></p>
+      <ul class="tl"><li>Знаете, сколько ресторан заработал за месяц</li><li>Видите, куда ушли деньги</li><li>Понятные инвентаризации: что пропало и почему</li><li>Списания, потерянные чеки и все расходы как на ладони</li></ul>
+      <p class="tex">Пример: <a href="#k3" data-case>Кейс 3</a>, <a href="#k6" data-case>Инвентаризации</a></p></div>
+    <div class="tcard hi"><p class="tname">Тариф «Управление»</p><p class="tval">Каждое решение на цифрах</p><p class="tpr">от 40 тыс ₽ <span>в месяц за заведение</span></p>
+      <ul class="tl"><li>Всё из «Учёта»</li><li>Каждую неделю получаете развёрнутый отчёт об эффективности ресторана</li><li>Раз в месяц разбираете отчёты вместе с нами и получаете 3-5 задач на рост рентабельности</li></ul>
+      <p class="tex">Пример: <a href="#k2" data-case>Кейс 2</a>, <a href="#k4" data-case>Кейс 4</a></p></div>
+    <div class="tcard"><p class="tname">Тариф «Финдиректор»</p><p class="tval">Прибыль по плану</p><p class="tpr">от 55 тыс ₽ <span>в месяц за заведение</span></p>
+      <ul class="tl"><li>Всё из «Управления», плюс отчёт об эффективности каждый день</li><li>Себестоимость и списания под контролем каждую неделю</li><li>План прибыли на квартал и год, и вы видите, как он выполняется</li><li>Вы копите капитал, а не долги</li></ul>
+      <p class="tex">Пример: <a href="#k1" data-case>Кейс 1</a></p></div>
+  </div>
+</section></div></div>
+
+<div class="wrap">
+<section class="block" id="kak">
+  <div class="head"><p class="ey">Как работаем</p><h2>Вы свободны от рутины учёта</h2></div>
+  <div class="grid">
+    <div class="card"><h3>Документы</h3><p style="font-size:15px;color:var(--ink-2)">Накладные, акты и чеки вносятся без вашего участия</p></div>
+    <div class="card"><h3>Поставщики</h3><p style="font-size:15px;color:var(--ink-2)">Контроль задолженности, ежемесячные сверки и проверка приходов</p></div>
+    <div class="card"><h3>Банк</h3><p style="font-size:15px;color:var(--ink-2)">Каждый платёж попадает в свою статью</p></div>
+    <div class="card"><h3>Инвентаризации</h3><p style="font-size:15px;color:var(--ink-2)">Вы знаете причину каждого расхождения</p></div>
+    <div class="card"><h3>Отчёты</h3><p style="font-size:15px;color:var(--ink-2)">Прибыль, движение денег и баланс до 15 числа</p></div>
+  </div>
+  <p class="you">От вас нужно только две вещи: <b>доступ в iiko</b> и <b>фото документов</b> в наш Telegram-бот.</p>
+</section>
+</div>
+
+<div class="wrap">
+<section class="contact-block" id="kontakt">
+  <p class="ey">Связаться</p>
+  <h2>Узнайте, где теряет деньги ваш ресторан</h2>
+  <p class="lead">Бесплатный разбор на ваших цифрах, 35 минут. Вы увидите, куда уходит прибыль.</p>
+  <div class="tg"><a class="handle" href="{{TG}}" target="_blank" rel="noopener">@finrest_sup</a><span class="muted">в Telegram</span></div>
+  <div class="tg"><span class="muted">Напишите слово</span><kbd id="kw">Разбор</kbd><button class="copy" id="copy" type="button">Скопировать</button><span class="muted">и получите ответ в течение дня.</span></div>
+  <p class="muted" style="font-size:15px">Владимир Гуськов, основатель ФинРест</p>
+</section>
+</div>
+</main>
+<footer><div class="wrap"><img src="{{IMG:logo/full.png}}" alt="ФинРест"><span>Управленческий учёт и калькуляция для ресторанов на iiko. Цифры из отчётов клиентов, названия скрыты.</span></div></footer>
+<script>
+(function(){
+var NS='http://www.w3.org/2000/svg';
+function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
+function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+function txt(p,x,y,s,cls,anchor){var t=el('text',{x:x,y:y,'text-anchor':anchor||'middle'},p);if(cls)t.setAttribute('class',cls);t.textContent=s;return t}
+function f(n,d){return (Math.round(n*Math.pow(10,d))/Math.pow(10,d)).toFixed(d).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,' ')}
+function svg(id,h){var s=el('svg',{viewBox:'0 0 640 '+h,class:'chart',role:'img'});document.getElementById(id).appendChild(s);return s}
+// vertical bars, one or two series
+function bars(id,o){
+  var H=o.h||300,s=svg(id,H),L=8,R=8,T=34,B=46,W=640-L-R,ih=H-T-B,n=o.labels.length,ser=o.series,
+      mx=o.max||Math.max.apply(null,ser.flatMap(function(z){return z.v})),mn=Math.min(0,Math.min.apply(null,ser.flatMap(function(z){return z.v}))),
+      sc=function(v){return T+ih*(mx-v)/(mx-mn)},gw=W/n,bw=Math.min(46,(gw-10)/ser.length);
+  s.setAttribute('aria-label',o.alt||'');
+  el('line',{x1:L,x2:640-R,y1:sc(0),y2:sc(0),stroke:css('--rule')},s);
+  o.labels.forEach(function(lb,i){
+    var cx=L+gw*i+gw/2; txt(s,cx,H-B+30,lb);
+    ser.forEach(function(z,j){var v=z.v[i];if(v==null)return;var x=cx-(bw*ser.length)/2+bw*j+2,y=Math.min(sc(v),sc(0)),hh=Math.max(1,Math.abs(sc(v)-sc(0)));
+      var c=typeof z.c==='function'?z.c(i,v):z.c;var r=el('rect',{x:x,y:y,width:bw-4,height:hh,rx:3,fill:c},s);el('title',{},r).textContent=lb+': '+f(v,o.d||0)+(o.u||'');
+      if(o.labelsOn!==false&&ser.length===1)txt(s,x+(bw-4)/2,v>=0?y-9:y+hh+22,f(v,o.d||0),'v');});
+  });
+  if(o.mark!=null){var mx2=L+gw*o.mark;el('line',{x1:mx2,x2:mx2,y1:T-14,y2:H-B,stroke:css('--ink'),'stroke-dasharray':'4 4'},s);txt(s,mx2+8,T-8,o.markText,'v','start')}
+}
+// lines
+function lines(id,o){
+  var H=o.h||280,s=svg(id,H),L=24,R=24,T=36,B=44,W=640-L-R,ih=H-T-B,n=o.labels.length,
+      all=o.series.flatMap(function(z){return z.v}),mx=o.max||Math.max.apply(null,all)*1.08,mn=o.min!=null?o.min:0,
+      sc=function(v){return T+ih*(mx-v)/(mx-mn)},xs=function(i){return L+20+(W-40)*i/(n-1)};
+  s.setAttribute('aria-label',o.alt||'');
+  el('line',{x1:L,x2:640-R,y1:H-B,y2:H-B,stroke:css('--rule')},s);
+  o.labels.forEach(function(lb,i){txt(s,xs(i),H-B+30,lb)});
+  o.series.forEach(function(z,j){
+    var d=z.v.map(function(v,i){return (i?'L':'M')+xs(i)+' '+sc(v)}).join(' ');
+    el('path',{d:d,fill:'none',stroke:z.c,'stroke-width':2.5},s);
+    z.v.forEach(function(v,i){var c=el('circle',{cx:xs(i),cy:sc(v),r:4,fill:z.c,stroke:css('--bg'),'stroke-width':2},s);el('title',{},c).textContent=(z.name?z.name+', ':'')+o.labels[i]+': '+f(v,o.d||0)+(o.u||'');
+      if(o.labelsOn==='last'?i===z.v.length-1||i===0:o.labelsOn)txt(s,xs(i),sc(v)-13,f(v,o.d||0)+(o.us||''),'v')});
+  });
+}
+// horizontal bars (supports negative)
+function hbars(id,o){
+  var rh=46,H=o.rows.length*rh+16,s=svg(id,H),lw=o.lw||260,L=lw,R=96,W=640-L-R,
+      vals=o.rows.map(function(r){return r[1]}),mx=Math.max(0,Math.max.apply(null,vals)),mn=Math.min(0,Math.min.apply(null,vals)),
+      sc=function(v){return L+W*(v-mn)/(mx-mn||1)};
+  s.setAttribute('aria-label',o.alt||'');
+  if(mn<0)el('line',{x1:sc(0),x2:sc(0),y1:0,y2:H,stroke:css('--rule')},s);
+  o.rows.forEach(function(r,i){var y=8+i*rh,v=r[1],x=Math.min(sc(v),sc(0)),w=Math.max(2,Math.abs(sc(v)-sc(0)));
+    txt(s,lw-12,y+28,r[0],null,'end');
+    var c=r[2]||(v<0?css('--red'):css('--green-2'));
+    var b=el('rect',{x:x,y:y+6,width:w,height:rh-16,rx:3,fill:c},s);el('title',{},b).textContent=r[0]+': '+f(v,o.d||0)+(o.u||'');
+    txt(s,v<0?sc(0)+8:x+w+8,y+29,(v>0&&o.plus?'+':'')+f(v,o.d||0),'v','start');});
+}
+// 100% stacked bar(s)
+function stack(id,o){
+  var rh=58,H=o.rows.length*(rh+26)+8,s=svg(id,H),L=0,W=640;
+  s.setAttribute('aria-label',o.alt||'');
+  o.rows.forEach(function(r,i){var y=i*(rh+26)+4,x=L;if(r.name)txt(s,0,y+12,r.name,'v','start');var yy=y+(r.name?20:0);
+    r.parts.forEach(function(p){var w=W*p[1]/100;var b=el('rect',{x:x+1,y:yy,width:Math.max(0,w-2),height:rh-18,fill:p[2]},s);el('title',{},b).textContent=p[0]+': '+f(p[1],1).replace(',0','')+' ₽';
+      if(w>52){var t=txt(s,x+w/2,yy+28,f(p[1],0)+' ₽');t.setAttribute('style','fill:'+(p[3]||'#fff')+';font-weight:700')}x+=w;});});
+  var lg=document.createElement('div');lg.className='legend';o.rows[0].parts.forEach(function(p){lg.innerHTML+='<span><i style="background:'+p[2]+'"></i>'+p[0]+'</span>'});document.getElementById(id).appendChild(lg);
+}
+function draw(){
+  document.querySelectorAll('.fig div[id]').forEach(function(d){d.innerHTML=''});
+  var G=css('--green-2'),Au=css('--gold'),Gr=css('--grey'),Ink=css('--ink');
+  var m8=['янв','фев','мар','апр','май','июн','июл','авг'];
+  // case 1
+  var lost=[59,-8,69,439,449,395,400,148,525,171,146,305,151,172,72,19,19,65,49,27];
+  bars('c1a',{labels:['я','','м','','м','','и','','с','','н','','я','','м','','м','','и',''],series:[{v:lost.map(function(v){return Math.max(v,0)}),c:function(i){return i<9?Gr:G}}],labelsOn:false,mark:9,markText:'старт ФинРест',u:' тыс ₽',h:250,alt:'Траты без чеков по месяцам с января 2025 по август 2026'});
+  lines('c1b',{labels:m8,series:[{name:'2025',v:[12.86,11.61,12.67,11.52,13.25,15.08,16.60,15.18],c:Gr},{name:'2026',v:[12.46,11.22,18.75,17.83,20.17,22.46,24.14,24.10],c:G}],d:1,labelsOn:'last',u:' млн ₽',alt:'Выручка 2025 и 2026 по месяцам'});
+  lines('c1c',{labels:m8,series:[{name:'2025',v:[5.55,2.93,4.13,1.61,2.69,2.21,6.10,5.56],c:Gr},{name:'2026',v:[3.34,1.04,4.20,3.66,4.72,6.05,6.68,7.46],c:G}],d:1,labelsOn:'last',u:' млн ₽',alt:'Прибыль 2025 и 2026 по месяцам'});
+  ['c1b','c1c'].forEach(function(id){var lg=document.createElement('div');lg.className='legend';lg.innerHTML='<span><i style="background:'+Gr+'"></i>2025</span><span><i style="background:'+G+'"></i>2026</span>';document.getElementById(id).appendChild(lg)});
+  var p=[['Точка 1',[3.25,3.36,3.21,4.52,6.00,6.12,5.39]],['Точка 2',[-1.58,1.08,0.55,0.88,0.59,0.42,0.79]],['Точка 3',[-0.48,-0.05,0.16,-0.35,0.00,0.39,0.74]],['Новая точка',[null,null,null,null,-0.12,0.49,0.81]]];
+  var cols=[G,Au,Gr,Ink];
+  bars('c1d',{labels:['фев','мар','апр','май','июн','июл','авг'],series:p.map(function(z,i){return {v:z[1],c:cols[i]}}),d:1,h:260,u:' млн ₽',alt:'Прибыль по точкам'});
+  var lg=document.createElement('div');lg.className='legend';p.forEach(function(z,i){lg.innerHTML+='<span><i style="background:'+cols[i]+'"></i>'+z[0]+'</span>'});document.getElementById('c1d').appendChild(lg);
+  // case 2
+  var m6=['мар','апр','май','июн','июл','авг'];
+  bars('c2a',{labels:m6,series:[{v:[6.54,7.11,7.45,8.73,10.33,9.90],c:Gr}],d:1,u:' млн ₽',alt:'Выручка сети'});
+  bars('c2b',{labels:m6,series:[{v:[0.38,1.18,0.93,1.90,2.04,2.61],c:G}],d:2,u:' млн ₽',alt:'Прибыль сети'});
+  bars('c2c',{labels:['март','август'],series:[{v:[1.94,4.29],c:G},{v:[1.56,1.68],c:Gr}],d:2,h:230,u:' млн ₽',alt:'Заработок точек и общие расходы'});
+  var l2=document.createElement('div');l2.className='legend';l2.innerHTML='<span><i style="background:'+G+'"></i>заработали точки: 1,94 → 4,29</span><span><i style="background:'+Gr+'"></i>общие расходы сети: 1,56 → 1,68</span>';document.getElementById('c2c').appendChild(l2);
+  stack('c2d',{rows:[{parts:[['Продукты',24,Gr,Ink],['Персонал',29,css('--ink-2')],['Аренда',14,Au,'#16211C'],['Маркетинг',4,Au],['Прочее',10,css('--muted')],['Прибыль',18,G]]}],alt:'Структура 100 рублей выручки'});
+  hbars('c2e',{rows:[['Точка А',26.5,Au],['Точка Б',25.7,Au],['Остальные',17,G]],d:1,lw:150,alt:'Доля зарплаты по точкам'});
+  // case 3
+  bars('c3a',{labels:m8,series:[{v:[0.92,1.23,1.13,0.73,1.54,1.30,0.99,1.24],c:function(i){return i<4?Gr:G}}],d:2,u:' млн ₽',alt:'Прибыль ресторана по месяцам'});
+  stack('c3b',{rows:[{parts:[['Себестоимость',29,Gr,Ink],['Персонал',24,css('--ink-2')],['Прочие расходы',20,css('--muted')],['Прибыль',28,G]]}]});
+  lines('c3c',{labels:m8,series:[{v:[2.08,2.54,2.66,2.73,3.02,3.37,3.42,3.39],c:G}],d:2,labelsOn:'last',min:1.5,u:' млн ₽',h:220,alt:'Капитал ресторана'});
+  // case 4
+  lines('c4a',{labels:m8,series:[{v:[31.5,34.9,33.2,32.6,29.1,25.8,25.2,25.6],c:Au}],d:1,labelsOn:true,us:'%',min:20,max:38,u:'%',alt:'Фудкост по месяцам'});
+  bars('c4b',{labels:m8,series:[{v:[56,24,35,29,61,82,26,141],c:function(i){return i<4?Gr:G}}],u:' тыс ₽',alt:'Прибыль кофейни'});
+  lines('c4c',{labels:m8,series:[{v:[53,52,46,24,85,146,161,236],c:G}],labelsOn:'last',u:' тыс ₽',h:220,alt:'Капитал кофейни'});
+  // case 5
+  hbars('c5a',{rows:[['Авансы без накладных',550],['Накладные не в iiko',302],['Задвоения',277],['Лишняя комиссия',63]],lw:250,alt:'Найденные расхождения'});
+  bars('c5b',{labels:['1-й месяц','2-й месяц'],series:[{v:[-0.49,1.09],c:function(i,v){return v<0?css('--red'):G}}],d:2,h:210,u:' млн ₽',alt:'Прибыль ресторана июль и август'});
+  // inventory
+  hbars('c6a',{rows:[['Без накладной',9595],['Без перемещения',3786],['Молоко',-5688],['Кофе зерно',-3629],['Чай, 2 позиции',-1806],['Не тот склад',-960]],lw:190,plus:true,u:' ₽',alt:'Расхождения на баре по причинам'});
+}
+if(!document.querySelector('#c1a svg'))draw();
+
+// case navigation
+function openCase(id){var a=document.getElementById(id);if(!a)return;var d=a.querySelector('details.more');if(d&&!d.open&&a.dataset.opened!=='1'){}}
+var gal=document.getElementById('gal'),slides=[].slice.call(gal.querySelectorAll('.case'));window.slides=slides;var gds=[].slice.call(document.querySelectorAll('.gd')),gi=0;
+function gIdx(){var best=0,bd=1e9,gl=gal.getBoundingClientRect().left;slides.forEach(function(sl,i){var d=Math.abs(sl.getBoundingClientRect().left-gl-16);if(d<bd){bd=d;best=i}});return best}
+function gUpd(){gi=gIdx();document.getElementById('gCount').textContent=(gi+1)+' / '+slides.length;gds.forEach(function(d,i){d.classList.toggle('on',i===gi)});document.getElementById('gPrev').disabled=gi===0;document.getElementById('gNext').disabled=gi===slides.length-1;req()}
+function gGo(i,smooth){i=Math.max(0,Math.min(slides.length-1,i));var x=slides[i].offsetLeft-16;try{gal.scrollTo({left:x,behavior:smooth===false?'auto':'smooth'})}catch(e){gal.scrollLeft=x}}
+var gt;gal.addEventListener('scroll',function(){clearTimeout(gt);gt=setTimeout(gUpd,60)},{passive:true});
+document.getElementById('gPrev').onclick=function(){gGo(gi-1)};document.getElementById('gNext').onclick=function(){gGo(gi+1)};
+gds.forEach(function(d,i){d.onclick=function(){gGo(i)}});
+document.querySelectorAll('a[href^="#k"]').forEach(function(l){l.addEventListener('click',function(e){var id=l.getAttribute('href').slice(1),i=slides.findIndex(function(x){return x.id===id});if(i<0)return;e.preventDefault();
+  var top=document.getElementById('keisy').getBoundingClientRect().top+window.scrollY-110;window.scrollTo({top:top,behavior:'smooth'});gGo(i,false);
+  if(l.closest('.mn')){var d=slides[i].querySelector('details.open1');if(d)d.open=true}setTimeout(gUpd,80)})});
+gUpd();
+var chips=[].slice.call(document.querySelectorAll('.cnav a')),secs=chips.map(function(c){return document.getElementById(c.getAttribute('href').slice(1))});
+function onScroll(){var y=window.scrollY+150,cur=-1;secs.forEach(function(s,i){if(s&&s.getBoundingClientRect().top+window.scrollY<=y)cur=i});
+  var kt=document.getElementById('keisy'),it=document.getElementById('itog');if(window.slides&&kt&&it&&kt.getBoundingClientRect().top+window.scrollY<=y&&it.getBoundingClientRect().top+window.scrollY>y){var sid=window.slides[gi].id;chips.forEach(function(c,i){if(c.getAttribute('href')==='#'+sid)cur=i})}
+  chips.forEach(function(c,i){var on=i===cur;if(on!==c.classList.contains('on')){c.classList.toggle('on',on);if(on){var n=c.parentNode,cr=c.getBoundingClientRect(),nr=n.getBoundingClientRect();
+    var x=n.scrollLeft+(cr.left-nr.left)-(nr.width-cr.width)/2;try{n.scrollTo({left:x,behavior:'smooth'})}catch(e){n.scrollLeft=x}
+    setTimeout(function(){if(Math.abs(n.scrollLeft-Math.max(0,Math.min(x,n.scrollWidth-n.clientWidth)))>4)n.scrollLeft=x},450)}}})}
+var tk=false;function req(){if(!tk){tk=true;requestAnimationFrame(function(){tk=false;onScroll()})}}
+window.addEventListener('scroll',req,{passive:true});document.addEventListener('touchmove',req,{passive:true});window.addEventListener('resize',req);onScroll();
+
+// zoom screenshots
+document.querySelectorAll('.shot').forEach(function(sc){sc.setAttribute('role','button');sc.tabIndex=0;
+  var open=function(){var lb=document.createElement('div');lb.className='lb';lb.innerHTML='<button type="button">Закрыть</button><p>Листайте вбок</p>';
+    lb.appendChild(sc.querySelector('img').cloneNode());var close=function(){lb.remove()};lb.querySelector('button').onclick=close;
+    lb.addEventListener('click',function(e){if(e.target===lb)close()});document.body.appendChild(lb);lb.querySelector('button').focus()};
+  sc.addEventListener('click',open);sc.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}})});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){var l=document.querySelector('.lb');if(l)l.remove()}});
+var b=document.getElementById('copy'),kw=document.getElementById('kw');
+b.addEventListener('click',function(){var ok=function(){b.textContent='Скопировано';setTimeout(function(){b.textContent='Скопировать'},1600)},
+  sel=function(){var r=document.createRange();r.selectNodeContents(kw);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Выделено'};
+  try{navigator.clipboard.writeText(kw.textContent).then(ok,sel)}catch(e){sel()}});
+})();
+</script>
