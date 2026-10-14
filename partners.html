@@ -74,6 +74,12 @@ section.block{padding-block:40px}
 .get li::before{content:"✓";color:var(--green-2);font-weight:700}
 .honest{margin-top:18px;padding:16px;border-radius:12px;background:var(--green);color:var(--on-green);font-size:16px}
 .honest b{color:var(--gold-hi)}
+.tars{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:18px}
+.tar{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:4px}
+.tar.hi{border-color:var(--gold)}
+.tar b{font-family:var(--serif);font-size:18px;color:var(--green)}
+.tar i{font-style:normal;font-family:var(--serif);font-weight:700;color:var(--gold)}
+.tar span{font-size:15px;color:var(--ink-2)}
 .btn{display:inline-block;margin-top:16px;text-decoration:none;border-bottom:1px solid var(--gold);color:var(--green-2);font-weight:700}
 
 .faq{display:flex;flex-direction:column}
@@ -156,8 +162,15 @@ footer img{height:36px;width:auto}
     <li>Отчёты простым языком, без бухгалтерских терминов</li>
     <li>Видно, где теряются деньги: списания, недостачи, лишняя себестоимость</li>
   </ul>
-  <p class="honest">Мы не обещаем рост прибыли. Мы делаем учёт, по которому владелец сам принимает решения. <b>Наши клиенты окупают нашу работу.</b></p>
-  <a class="btn" href="index.html">Посмотреть кейсы клиентов →</a>
+  <p class="lead" style="margin-top:22px;font-size:17px">Есть тарифы под любое заведение, от одной кофейни до сети:</p>
+  <div class="tars">
+    <div class="tar"><b>«Учёт»</b><i>от 30 тыс ₽</i><span>Порядок в iiko и ответ на вопрос «где прибыль»</span></div>
+    <div class="tar hi"><b>«Управление»</b><i>от 40 тыс ₽</i><span>Каждую неделю отчёт об эффективности, раз в месяц разбор вместе с нами</span></div>
+    <div class="tar"><b>«Финдиректор»</b><i>от 55 тыс ₽</i><span>Мы работаем вашим финансовым директором: план прибыли и контроль каждую неделю</span></div>
+  </div>
+  <p class="note">Цены в месяц за заведение. Для сетей скидки до 20%.</p>
+  <p class="honest">Мы не обещаем рост прибыли. Но делаем учёт настолько понятным, что разберётся даже ребёнок: сразу видно, что поменять, чтобы в следующем месяце рентабельность подросла. <b>Наши клиенты окупают нашу работу.</b></p>
+  <a class="btn" href="index.html">Посмотреть кейсы и тарифы подробно →</a>
 </section></div></div>
 
 <div class="wrap">
