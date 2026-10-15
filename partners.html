@@ -1,28 +1,24 @@
 <!doctype html>
-<html lang="ru">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ФинРест: партнёрская программа</title>
-<meta name="description" content="Порекомендуйте ФинРест ресторатору: вы получаете 15 000 ₽, ваш знакомый получает скидку 15 000 ₽ на первый месяц учёта.">
-<meta property="og:title" content="ФинРест: 15 000 ₽ за рекомендацию">
-<meta property="og:description" content="Порекомендуйте нас ресторатору: вам 15 000 ₽, ему скидка 15 000 ₽ на первый месяц.">
+<html lang="ru"><head><meta charset="utf-8"><meta name="description" content="Порекомендуйте ФинРест ресторатору: вам 15 000 ₽, ему скидка 15 000 ₽ на первый месяц учёта."><meta property="og:title" content="15 000 ₽ за рекомендацию ресторатору"><meta property="og:description" content="Партнёрская программа ФинРест: учёт и калькуляция ресторанов на iiko."><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ФинРест: результаты клиентов</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&family=PT+Mono&display=swap">
 <style>
+/* Layout: отчёт-лента. Шапка и навигация по кейсам закреплены сверху. Каждый кейс: тёмно-зелёная «обложка» с золотыми цифрами и главным графиком, полный разбор раскрывается. Цвета ФинРест: глубокий зелёный и золото */
 :root{
   --bg:#F7F6F1; --sheet:#FFFFFF; --sheet-2:#F1EEE4; --ink:#16211C; --ink-2:#44524C; --muted:#78837D; --rule:#E2DFD4;
-  --green:#04251E; --green-mid:#0E3A2F; --green-2:#1F6A54; --gold:#B88F45; --gold-hi:#CBA35C;
-  --on-green:#F3F1EA; --on-green-2:#AFC0B7;
+  --green:#04251E; --green-mid:#0E3A2F; --green-2:#1F6A54; --gold:#B88F45; --gold-hi:#CBA35C; --grey:#BFBDB0;
+  --on-green:#F3F1EA; --on-green-2:#AFC0B7; --red:#A8432F;
   --serif:'PT Serif',Cambria,Georgia,serif; --sans:'PT Sans',Calibri,'Segoe UI',Arial,sans-serif; --mono:'PT Mono',Consolas,monospace;
-  color-scheme:light;
 }
+:root{color-scheme:light}
 *{box-sizing:border-box}
+html{scroll-padding-top:120px}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;margin:0}
 .wrap{max-width:880px;margin:0 auto;padding-inline:18px}
 h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.18;text-wrap:balance;margin:0}
-h1{font-size:clamp(30px,6vw,46px)}
+h1{font-size:clamp(30px,6vw,48px)}
 h2{font-size:clamp(23px,4.4vw,32px)}
 h3{font-size:19px}
 p{margin:0}
@@ -31,156 +27,352 @@ a{color:inherit}
 .muted{color:var(--muted)}
 .lead{font-size:18px;color:var(--ink-2);max-width:62ch}
 
-.top{position:sticky;top:0;z-index:20;background:var(--green);color:var(--on-green);box-shadow:0 1px 0 rgba(0,0,0,.2)}
-.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px}
+/* sticky top */
+.top{position:-webkit-sticky;position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--green);color:var(--on-green);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:9px}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 .logo img{display:block;height:20px;width:auto}
 .logo img.w{height:15px}
 .bar .contact{color:var(--gold-hi);text-decoration:none;font-size:14px;border-bottom:1px solid currentColor}
+.cnav{display:flex;gap:6px;overflow-x:auto;padding-block:0 10px;scrollbar-width:none}
+.cnav::-webkit-scrollbar{display:none}
+.cnav a{flex:none;text-decoration:none;font-size:13px;color:var(--on-green-2);border:1px solid rgba(203,163,92,.35);border-radius:999px;padding:5px 11px;white-space:nowrap}
+.cnav a b{color:var(--gold-hi);margin-right:4px}
+.cnav a.on{background:var(--gold-hi);color:#04251E;border-color:var(--gold-hi)}
+.cnav a.on b{color:#04251E}
+.cnav a.caps{letter-spacing:.06em;font-weight:700;color:var(--gold-hi)}
+.cnav a.caps.on{color:#04251E}
 
-.cover{background:var(--green);background-image:linear-gradient(135deg,var(--green) 0%,var(--green-mid) 100%);color:var(--on-green);padding-block:38px 46px;position:relative;overflow:hidden}
+.cover{background:var(--green);color:var(--on-green);padding-block:34px 44px;position:relative;overflow:hidden}
 .cover .wrap{display:flex;flex-direction:column;gap:18px;position:relative}
 .cover .mark{position:absolute;right:-30px;top:10px;width:230px;opacity:.07;pointer-events:none}
 .cover .ey{color:var(--gold-hi)}
 .cover .lead{color:var(--on-green-2)}
-.cover h1 em{font-style:normal;color:var(--gold-hi)}
+.cover .full{width:120px;height:auto}
 .facts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(203,163,92,.4);margin-top:8px}
 .facts div{padding:14px 12px 0 0;display:flex;flex-direction:column;gap:2px;min-width:0}
 .facts b{font-family:var(--serif);font-size:clamp(22px,4.4vw,34px);color:var(--gold-hi);font-variant-numeric:tabular-nums}
 .facts span{font-size:14px;color:var(--on-green-2);line-height:1.35}
 @media (max-width:520px){.facts{grid-template-columns:1fr}.facts div{flex-direction:row;align-items:baseline;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.1)}.facts b{min-width:5.4em}}
 
-section.block{padding-block:40px}
+section.block{padding-block:44px}
 .head{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
 
-.who{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;list-style:none;margin:0;padding:0}
-.who li{background:var(--sheet);border:1px solid var(--rule);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:4px}
-.who b{font-family:var(--serif);font-size:18px;color:var(--green)}
-.who span{font-size:15px;color:var(--ink-2)}
+.tbl{width:100%;border-collapse:collapse;font-size:15px}
+.tbl th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;font-weight:700;padding:8px 10px 8px 0;border-bottom:2px solid var(--gold)}
+.tbl td{padding:12px 10px 12px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+.tbl td.num{font-family:var(--serif);font-weight:700;color:var(--green-2);font-variant-numeric:tabular-nums}
+.tbl a{text-decoration:none;border-bottom:1px solid var(--gold)}
+.tscroll{overflow-x:auto}
 
-.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0;counter-reset:s}
-.steps li{display:grid;grid-template-columns:52px 1fr;gap:14px;padding:16px 0;border-bottom:1px solid var(--rule);counter-increment:s}
-.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--serif);font-weight:700;font-size:26px;color:var(--gold);line-height:1.1}
-.steps b{display:block;font-size:18px;color:var(--ink)}
-.steps span{color:var(--ink-2);font-size:16px}
+/* case card */
+.cases{display:flex;flex-direction:column;gap:22px;padding-block:8px 40px}
+.case{border-radius:16px;overflow:hidden;background:var(--sheet);border:1px solid var(--rule);min-width:0}
+.case-hd{background:var(--green);color:var(--on-green);padding:22px 20px;display:flex;flex-direction:column;gap:14px;background-image:linear-gradient(135deg,var(--green) 0%,var(--green-mid) 100%)}
+.case-hd .ey{color:var(--gold-hi)}
+.case-hd h2{color:var(--on-green)}
+.pass{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--on-green-2)}
+.pass b{color:var(--on-green);font-weight:700}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.kpi{border-top:1px solid rgba(203,163,92,.45);padding-top:10px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.kpi b{font-family:var(--serif);font-size:30px;line-height:1.1;color:var(--gold-hi);font-variant-numeric:tabular-nums}
+.kpi span{font-size:14px;color:var(--on-green-2);line-height:1.4}
+.case-bd{padding:20px;display:flex;flex-direction:column;gap:22px}
+details.more{border-top:1px solid var(--rule)}
+details.more>summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 20px;font-weight:700;color:var(--green-2)}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::after{content:"";width:10px;height:10px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg);margin-top:-5px;transition:transform .2s}
+details.more[open]>summary::after{transform:rotate(-135deg);margin-top:5px}
+details.more>summary .when-open{display:none}
+details.more[open]>summary .when-open{display:inline}
+details.more[open]>summary .when-closed{display:none}
+.more-bd{padding:0 20px 22px;display:flex;flex-direction:column;gap:24px}
+.fig{display:flex;flex-direction:column;gap:10px;margin:0}
+.fig .t{font-weight:700;font-size:16px}
+.fig .s{font-size:13px;color:var(--muted)}
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.chart text{font-family:var(--sans);font-size:21px;fill:var(--muted)}
+.chart .v{fill:var(--ink);font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--ink-2)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.insight{background:var(--sheet-2);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:12px 14px;color:var(--ink-2);font-size:16px}
+.insight b{color:var(--ink)}
+.done h3{font-size:18px;margin-bottom:6px}
+.done ul{margin:0;padding-left:20px;color:var(--ink-2)}
+.done li{margin:5px 0}
+.done li::marker{color:var(--gold)}
+.shots{display:flex;flex-direction:column;gap:8px}
+.shot{border:1px solid var(--rule);border-radius:6px;background:#fff;padding:6px;cursor:zoom-in;position:relative}
+.shot img{display:block;width:100%;height:auto}
+.shot::after{content:"увеличить";position:absolute;right:6px;bottom:6px;font:11px var(--mono);background:#04251E;color:#F3F1EA;padding:2px 7px;border-radius:4px}
+.shot-cap{font-size:13px;color:var(--muted);font-family:var(--mono);margin-bottom:6px}
+.two{display:grid;grid-template-columns:1fr;gap:26px}
+@media (min-width:760px){.two{grid-template-columns:1fr 1fr}}
+.pn{display:flex;justify-content:space-between;gap:12px;font-size:14px;border-top:1px solid var(--rule);padding-top:14px}
+.pn a{color:var(--green-2);text-decoration:none}
+.soft{font-size:15px;color:var(--muted)}
+.soft a{color:var(--green-2);text-decoration:none;border-bottom:1px solid var(--gold)}
 
-.sits{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
-.sits li{background:var(--sheet);border-left:3px solid var(--gold);border-radius:4px 12px 12px 4px;padding:12px 14px;font-size:16px}
-.note{margin-top:14px;font-size:15px;color:var(--muted)}
+.lb{position:fixed;inset:0;z-index:50;background:rgba(2,15,12,.94);overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 56px) 12px 24px}
+.lb img{display:block;width:1100px;max-width:none;height:auto;background:#fff;border-radius:4px}
+.lb button{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);right:12px;background:#F3F1EA;color:#04251E;border:0;border-radius:6px;padding:8px 16px;font:700 15px var(--sans);cursor:pointer}
+.lb p{color:#AFC0B7;font-size:13px;margin-bottom:10px}
 
-.band{background:var(--sheet-2)}
-.get{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
-.get li{display:flex;gap:10px;font-size:16px}
-.get li::before{content:"✓";color:var(--green-2);font-weight:700}
-.honest{margin-top:18px;padding:16px;border-radius:12px;background:var(--green);color:var(--on-green);font-size:16px}
-.honest b{color:var(--gold-hi)}
-.tars{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:18px}
-.tar{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:4px}
-.tar.hi{border-color:var(--gold)}
-.tar b{font-family:var(--serif);font-size:18px;color:var(--green)}
-.tar i{font-style:normal;font-family:var(--serif);font-weight:700;color:var(--gold)}
-.tar span{font-size:15px;color:var(--ink-2)}
-.btn{display:inline-block;margin-top:16px;text-decoration:none;border-bottom:1px solid var(--gold);color:var(--green-2);font-weight:700}
-
-.faq{display:flex;flex-direction:column}
-.faq div{padding:14px 0;border-bottom:1px solid var(--rule)}
-.faq b{display:block;margin-bottom:4px}
-.faq span{color:var(--ink-2);font-size:16px}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--rule);counter-reset:st}
+.steps li{display:grid;grid-template-columns:44px 1fr;gap:8px;padding:14px 0;border-bottom:1px solid var(--rule);counter-increment:st}
+.steps li::before{content:counter(st);font-family:var(--serif);font-size:24px;color:var(--gold);font-weight:700}
+.steps b{display:block}
+.steps span{color:var(--ink-2);font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.card{background:var(--sheet);border:1px solid var(--rule);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.card ul{margin:0;padding-left:18px;color:var(--ink-2);font-size:15px}
+.card li::marker{color:var(--gold)}
+.card .who{font-size:13px;color:var(--gold);font-weight:700}
+.sub{font-family:var(--serif);font-size:21px;font-weight:700;margin:32px 0 12px}
+.tar td:last-child,.tar th:last-child{text-align:right;white-space:nowrap}
+.band{background:var(--green);color:var(--on-green)}
+.band .lead{color:var(--on-green-2)}
+.band .tbl th{color:var(--on-green-2)}
+.band .tbl td{border-color:rgba(255,255,255,.12);color:var(--on-green-2)}
+.band .tbl td b{color:var(--on-green)}
+.band .tbl td.num{color:var(--gold-hi)}
+.tariffs{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:860px){.tariffs{grid-template-columns:repeat(3,1fr)}}
+.tcard{background:rgba(255,255,255,.04);border:1px solid rgba(203,163,92,.35);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.tcard.hi{border-color:var(--gold-hi);background:rgba(203,163,92,.08)}
+.tname{font-family:var(--serif);font-size:24px;font-weight:700;color:var(--on-green)}
+.tval{color:var(--gold-hi);font-weight:700}
+.tpr{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--on-green);line-height:1.1}
+.tpr span{font-family:inherit;font-size:14px;font-weight:400;color:var(--on-green-2)}
+.tpr span{font-family:system-ui,sans-serif}
+.sums{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:760px){.sums{grid-template-columns:1fr 1fr}}
+.pl{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;align-content:start}
+.pl .t{grid-column:1/-1;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.pl .f{grid-column:1/-1;font-size:16px;line-height:1.35}
+.pl b{display:block;font-family:var(--serif);font-size:26px;color:var(--green-2);line-height:1.1}
+.pl span{font-size:13px;color:var(--ink-2)}
+.pl .pay{grid-column:1/-1;background:var(--green);color:var(--on-green);border-radius:10px;padding:10px 14px;font-size:15px;line-height:1.35}
+.pl .pay em{font-style:normal;color:var(--gold-hi);font-weight:700}
+.tfor{font-size:14px;color:var(--on-green-2)}
+.trow{display:grid;grid-template-columns:110px 1fr;gap:10px;border-top:1px solid rgba(255,255,255,.1);padding-top:9px}
+.trow span{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-hi);font-weight:700;line-height:1.5}
+.trow p{font-size:15px;color:var(--on-green)}
+.tex{font-size:14px;color:var(--on-green-2);margin-top:auto;padding-top:6px}
+.tex a{color:var(--gold-hi);text-decoration:none;border-bottom:1px solid currentColor}
+.band .note{color:var(--on-green-2);font-size:14px;margin-top:12px}
 
 .contact-block{padding-block:44px 56px;display:flex;flex-direction:column;gap:14px}
 .tg{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
 .tg a.handle{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--green-2);text-decoration:none;border-bottom:2px solid var(--gold)}
 .tg kbd{font-family:var(--mono);background:var(--sheet);border:1px solid var(--gold);padding:3px 10px;border-radius:6px;color:var(--ink)}
 .copy{background:var(--green);border:0;color:var(--on-green);border-radius:6px;padding:6px 12px;font:14px var(--sans);cursor:pointer}
-.copy:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.copy:focus-visible,.shot:focus-visible,summary:focus-visible,.cnav a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 footer{background:var(--green);color:var(--on-green-2);font-size:13px;padding-block:22px}
 footer .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 footer img{height:36px;width:auto}
-</style>
-</head>
-<body>
-<div class="top"><div class="wrap"><div class="bar">
-  <a class="logo" href="index.html"><img src="img/logo_emblem.png" alt=""><img class="w" src="img/logo_word.png" alt="ФинРест"></a>
-  <a class="contact" href="https://t.me/finrest_sup" target="_blank" rel="noopener">Стать партнёром</a>
-</div></div></div>
+@media (prefers-reduced-motion:reduce){details.more>summary::after{transition:none}}
 
-<main>
+.vals{display:flex;flex-direction:column;gap:0;border-top:2px solid var(--gold)}
+.val{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:18px 0;border-bottom:1px solid var(--rule)}
+.val .n{font-family:var(--serif);font-size:34px;font-weight:700;color:var(--gold);line-height:1}
+.val b{display:block;font-size:20px;margin-bottom:4px}
+.val p{color:var(--ink-2);font-size:16px}
+.you{background:var(--green);color:var(--on-green);border-radius:12px;padding:16px 18px;font-size:16px;margin-top:16px}
+.you b{color:var(--gold-hi)}
+.story{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:760px){.story{grid-template-columns:1fr 1fr}}
+.story .lab{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}
+.story p,.story li{color:var(--ink-2);font-size:16px}
+.story ul{margin:0;padding-left:20px}
+.story li{margin:3px 0}
+.story li::marker{color:var(--gold)}
+.tl{margin:12px 0 0;padding-left:20px}
+.tl li{margin:6px 0;font-size:16px}
+.tl li::marker{color:var(--gold)}
+.vl2{list-style:none;margin:0;padding:0;border-top:2px solid var(--gold)}
+.vl2 li{padding:10px 0;border-bottom:1px solid var(--rule);line-height:1.3}
+.vl2 b{display:block;font-size:17px}
+.vl2 span{font-size:14px;color:var(--ink-2)}
+.mn{display:grid;grid-template-columns:1fr;gap:10px}
+@media (min-width:760px){.mn{grid-template-columns:1fr 1fr}}
+.mt{display:flex;flex-direction:column;gap:6px;padding:14px 16px;border:1px solid var(--rule);border-left:4px solid var(--gold);border-radius:14px;background:#fff;text-decoration:none;color:var(--ink);min-width:0;box-shadow:0 1px 3px rgba(4,37,30,.06);transition:transform .15s}
+.mt:active{transform:scale(.98)}
+.mt .ml{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700;line-height:1.3}
+.mt .pain{font-family:var(--serif);font-size:19px;font-weight:700;line-height:1.25;color:var(--ink)}
+.mt .res{font-size:14px;color:var(--green-2);line-height:1.35;display:flex;gap:6px;align-items:baseline}
+.mt .ok{font-weight:700}
+.mt .go{margin-top:4px;font-size:14px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:6px}
+.mt .go i{font-style:normal;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--green);color:var(--gold-hi);font-size:13px}
+.mlinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.mlinks a{flex:1 1 auto;text-align:center;text-decoration:none;font-size:14px;font-weight:700;color:var(--green);border:1.5px solid var(--green);border-radius:999px;padding:9px 12px}
+.mlinks a i{font-style:normal;color:var(--gold)}
+#cennost.vcard{background:#EAF1EC;border-radius:20px;padding:22px 18px 18px;margin:20px 0 6px}
+@media (min-width:760px){#cennost.vcard{padding:28px 28px 22px}}
+#cennost .vl2{border-top:0}
+#cennost .vl2 li{display:grid;grid-template-columns:26px 1fr;column-gap:8px;border-bottom:1px solid rgba(4,37,30,.1)}
+#cennost .vl2 li:last-child{border-bottom:0}
+#cennost .vl2 li::before{content:"✓";grid-row:1/3;width:22px;height:22px;border-radius:50%;background:var(--green);color:var(--gold-hi);font-size:12px;font-weight:700;display:grid;place-items:center;margin-top:2px}
+#menu{border-top:1px solid var(--rule);margin-top:18px}
+/* light tariff cards on dark band */
+.band .tcard{background:#FAF8F3;border:1px solid #FAF8F3;color:var(--ink);box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.band .tcard .tname,.band .tcard .tpr{color:var(--ink)}
+.band .tcard .tval{color:var(--gold)}
+.band .tcard .tpr span,.band .tcard .tex{color:var(--ink-2)}
+.band .tcard .tl li{color:var(--ink-2)}
+.band .tcard .tex a{color:var(--green-2)}
+.band .tcard.hi{background:#fff;border:2px solid var(--gold-hi);position:relative;margin-top:10px}
+.band .tcard.hi::before{content:"Топ тариф";position:absolute;top:-12px;left:16px;background:var(--gold-hi);color:var(--green);font-size:12px;font-weight:700;letter-spacing:.04em;padding:3px 10px;border-radius:999px}
+details.open1{border-top:0}
+.pn.pn-out{padding:14px 20px 18px}
+details.open1>summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;font-weight:700;font-size:15px;color:var(--green);border-top:1px solid var(--rule);background:var(--sheet)}
+details.open1>summary::-webkit-details-marker{display:none}
+details.open1>summary .sl{border-bottom:1.5px solid var(--gold-hi);padding-bottom:1px}
+details.open1>summary .pm{position:relative;flex:none;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--gold);transition:background .2s}
+details.open1>summary .pm::before,details.open1>summary .pm::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;background:var(--gold);transform:translate(-50%,-50%);transition:transform .2s}
+details.open1>summary .pm::after{transform:translate(-50%,-50%) rotate(90deg)}
+details.open1[open]>summary .pm{background:var(--gold)}
+details.open1[open]>summary .pm::before{background:#fff}
+details.open1[open]>summary .pm::after{background:#fff;transform:translate(-50%,-50%) rotate(0)}
+details.open1>summary .when-open{display:none}
+details.open1[open]>summary .when-open{display:inline}
+details.open1[open]>summary .when-closed{display:none}
+/* gallery */
+.gal{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 16px 26px;scroll-padding:0 16px;align-items:flex-start;scrollbar-width:none;-webkit-overflow-scrolling:touch;max-width:1080px;margin:0 auto}
+.gal::-webkit-scrollbar{display:none}
+.gal>.case{flex:0 0 88%;scroll-snap-align:start;box-shadow:0 4px 14px rgba(4,37,30,.10)}
+@media (min-width:760px){.gal>.case{flex-basis:560px}}
+.gctl{display:flex;align-items:center;gap:10px;margin-top:6px}
+.ga{flex:none;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--green);background:transparent;color:var(--green);font-size:22px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0 0 3px}
+.ga:disabled{opacity:.3}
+.gcount{font-weight:700;font-size:14px;color:var(--green);min-width:42px}
+.gdots{flex:1;display:flex;gap:6px;justify-content:center}
+.gd{width:8px;height:8px;border-radius:50%;border:0;padding:0;background:var(--rule);cursor:pointer}
+.gd.on{background:var(--gold);width:22px;border-radius:4px}
+.ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:700;font-size:16px;border-radius:12px;padding:14px 22px;line-height:1.2}
+.btn.pri{background:var(--gold);color:#fff}
+.btn.pri:hover{background:var(--gold-hi)}
+.btn.sec{border:1.5px solid currentColor;color:inherit}
+.cover .btn.sec{color:var(--on-green)}
+.btn.dark{background:var(--green);color:var(--on-green)}
+.cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.start{margin-top:18px;background:var(--sheet);border:1.5px solid var(--gold);border-radius:16px;padding:18px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;color:var(--ink)}
+.start b{font-family:var(--serif);font-size:20px}
+.start span{display:block;font-size:14px;color:var(--ink-2)}
+@media (max-width:520px){.btn{width:100%}}
+
+.pnum{display:grid;grid-template-columns:1fr;gap:12px;counter-reset:st}
+@media (min-width:700px){.pnum{grid-template-columns:repeat(2,1fr)}}
+.pnum div{background:var(--green-mid);border-radius:16px;padding:20px 20px 22px;display:flex;flex-direction:column;gap:6px}
+.pnum div::before{counter-increment:st;content:counter(st);font-family:var(--serif);font-size:44px;font-weight:700;color:var(--gold-hi);line-height:1}
+.pnum b{font-size:18px;color:var(--on-green)}
+.pnum span{font-size:15px;color:var(--on-green-2)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{background:var(--sheet);border:1px solid var(--rule);border-radius:999px;padding:9px 14px;font-size:15px}
+.calc{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px}
+.calc div{background:var(--sheet);border-radius:14px;padding:16px 12px;text-align:center;border:1px solid var(--rule)}
+.calc b{display:block;font-family:var(--serif);font-size:clamp(22px,5vw,32px);color:var(--green-2)}
+.calc span{font-size:13px;color:var(--ink-2)}
+.calc div.hi{background:var(--green);border-color:var(--green)}.calc div.hi b{color:var(--gold-hi)}.calc div.hi span{color:var(--on-green-2)}
+.faqd details{border-bottom:1px solid var(--rule);padding:14px 0}
+.faqd summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+.faqd summary::after{content:'+';color:var(--gold);font-size:22px;line-height:1}
+.faqd details[open] summary::after{content:'−'}
+.faqd p{margin-top:8px;color:var(--ink-2);font-size:15px}
+.honest{margin-top:18px;font-size:15px;color:var(--on-green-2)}
+.honest b{color:var(--on-green)}
+.ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:700;font-size:16px;border-radius:12px;padding:14px 22px;line-height:1.2}
+.btn.pri{background:var(--gold);color:#fff}.btn.pri:hover{background:var(--gold-hi)}
+.btn.sec{border:1.5px solid currentColor;color:inherit}
+.cover .btn.sec{color:var(--on-green)}
+.btn.dark{background:var(--green);color:var(--on-green)}
+.cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+@media (max-width:520px){.btn{width:100%}}
+</style></head><body>
+<div class="top"><div class="wrap">
+  <div class="bar">
+    <a class="logo" href="/keisy" aria-label="ФинРест"><img src="img/logo_emblem.png" alt=""><img class="w" src="img/logo_word.png" alt="ФинРест"></a>
+    <a class="contact" href="https://t.me/finrest_sup" target="_blank" rel="noopener">Стать партнёром</a>
+  </div>
+  <nav class="cnav" aria-label="Разделы">
+    <a href="#kak">Как это работает</a><a href="#komu">Кого рекомендовать</a><a href="#poluchit">Что получит знакомый</a><a href="#faq">Вопросы</a><a href="#kontakt"><b>Стать партнёром</b></a>
+  </nav>
+</div></div>
+
+<main id="top">
 <div class="cover"><img class="mark" src="img/logo_emblem.png" alt=""><div class="wrap">
-  <img src="img/logo_full.png" alt="ФинРест" style="width:120px;height:auto">
+  <img class="full" src="img/logo_full.png" alt="ФинРест">
   <p class="ey">Партнёрская программа</p>
-  <h1>Порекомендуйте нас ресторатору и получите <em>15 000 ₽</em></h1>
-  <p class="lead">Ваш знакомый получает скидку 15 000 ₽ на первый месяц учёта. Вы получаете 15 000 ₽, когда он начнёт работать с нами.</p>
+  <h1>Порекомендуйте нас ресторатору и получите 15 000 ₽</h1>
+  <p class="lead">Ваш знакомый получит скидку 15 000 ₽ на первый месяц учёта.</p>
+  <div class="ctas"><a class="btn pri" href="https://t.me/finrest_sup" target="_blank" rel="noopener">Стать партнёром</a><a class="btn sec" href="#kak">Как это работает</a></div>
   <div class="facts">
-    <div><b>15 000 ₽</b><span>вам за каждого нового клиента</span></div>
-    <div><b>−15 000 ₽</b><span>вашему знакомому на первый месяц</span></div>
+    <div><b>15 000 ₽</b><span>вам за каждого клиента</span></div>
+    <div><b>−15 000 ₽</b><span>знакомому на первый месяц</span></div>
     <div><b>0 ₽</b><span>чтобы стать партнёром</span></div>
   </div>
 </div></div>
 
-<div class="wrap">
-<section class="block">
-  <div class="head"><p class="ey">Кому подходит</p><h2>Вы знаете рестораторов</h2></div>
-  <ul class="who">
-    <li><b>Наши клиенты</b><span>Вы уже видите свои цифры и можете рассказать, как это устроено.</span></li>
-    <li><b>Рестораторы и управляющие</b><span>У ваших коллег те же вопросы к учёту, что были у вас.</span></li>
-    <li><b>Интеграторы и поддержка iiko</b><span>Вы ставите iiko, мы делаем так, чтобы её отчётам можно было верить.</span></li>
-    <li><b>Поставщики, бухгалтеры, консультанты</b><span>Вы каждый день работаете с ресторанами и видите их проблемы.</span></li>
-  </ul>
-</section>
-
-<section class="block">
+<div class="band" id="kak"><div class="wrap"><section class="block">
   <div class="head"><p class="ey">Как это работает</p><h2>Четыре шага</h2></div>
-  <ol class="steps">
-    <li><div><b>Напишите нам слово «Партнёр»</b><span>в Telegram @finrest_sup. Запишем вас как партнёра.</span></div></li>
-    <li><div><b>Расскажите знакомому о ФинРест</b><span>Передайте ему наш контакт или пришлите нам его контакт, если он согласен.</span></div></li>
-    <li><div><b>Знакомый пишет нам и называет ваше имя</b><span>Он получает скидку 15 000 ₽ на первый месяц учёта.</span></div></li>
-    <li><div><b>Вы получаете 15 000 ₽</b><span>после того, как знакомый оплатит первый месяц.</span></div></li>
-  </ol>
-</section>
-
-<section class="block">
-  <div class="head"><p class="ey">Кого рекомендовать</p><h2>Если знакомый говорит одно из этого</h2></div>
-  <ul class="sits">
-    <li>«Инвентаризация не сходится, и никто не может объяснить почему»</li>
-    <li>«В отчёте прибыль есть, а денег нет»</li>
-    <li>«Долги поставщикам всё время растут»</li>
-    <li>«Кажется, что мы слишком много платим»</li>
-    <li>«Надоели таблицы в Excel и ошибки в них»</li>
-    <li>«Открыли вторую точку: выручка есть, денег нет»</li>
-    <li>«iiko есть, но её отчётам никто не верит»</li>
-    <li>«Не понимаю, где искать прибыль»</li>
-  </ul>
-  <p class="note">Мы работаем с заведениями на iiko.</p>
-</section>
-</div>
-
-<div class="band"><div class="wrap"><section class="block">
-  <div class="head"><p class="ey">Что получит ваш знакомый</p><h2>Учёт, которому можно верить</h2></div>
-  <ul class="get">
-    <li>Учёт в iiko, где уже работает его ресторан: ничего менять не нужно</li>
-    <li>До 15 числа каждого месяца: сколько заработал, куда ушли деньги и сколько можно забрать себе</li>
-    <li>Отчёты простым языком, без бухгалтерских терминов</li>
-    <li>Видно, где теряются деньги: списания, недостачи, лишняя себестоимость</li>
-  </ul>
-  <p class="lead" style="margin-top:22px;font-size:17px">Есть тарифы под любое заведение, от одной кофейни до сети:</p>
-  <div class="tars">
-    <div class="tar"><b>«Учёт»</b><i>от 30 тыс ₽</i><span>Порядок в iiko и ответ на вопрос «где прибыль»</span></div>
-    <div class="tar hi"><b>«Управление»</b><i>от 40 тыс ₽</i><span>Каждую неделю отчёт об эффективности, раз в месяц разбор вместе с нами</span></div>
-    <div class="tar"><b>«Финдиректор»</b><i>от 55 тыс ₽</i><span>Мы работаем вашим финансовым директором: план прибыли и контроль каждую неделю</span></div>
+  <div class="pnum">
+    <div><b>Напишите нам «Партнёр»</b><span>в Telegram @finrest_sup</span></div>
+    <div><b>Расскажите знакомому о ФинРест</b><span>или пришлите нам его контакт</span></div>
+    <div><b>Знакомый называет ваше имя</b><span>и получает скидку 15 000 ₽</span></div>
+    <div><b>Вы получаете 15 000 ₽</b><span>после оплаты его первого месяца</span></div>
   </div>
-  <p class="note">Цены в месяц за заведение. Для сетей скидки до 20%.</p>
-  <p class="honest">Мы не обещаем рост прибыли. Но делаем учёт настолько понятным, что разберётся даже ребёнок: сразу видно, что поменять, чтобы в следующем месяце рентабельность подросла. <b>Наши клиенты окупают нашу работу.</b></p>
-  <a class="btn" href="index.html">Посмотреть кейсы и тарифы подробно →</a>
+  <div class="cta-row"><a class="btn pri" href="https://t.me/finrest_sup" target="_blank" rel="noopener">Написать «Партнёр»</a></div>
 </section></div></div>
 
 <div class="wrap">
-<section class="block">
-  <div class="head"><p class="ey">Вопросы</p><h2>Коротко о главном</h2></div>
-  <div class="faq">
-    <div><b>Сколько знакомых можно порекомендовать?</b><span>Сколько угодно. 15 000 ₽ за каждого, кто начнёт работать с нами.</span></div>
-    <div><b>Когда я получу деньги?</b><span>После того, как знакомый оплатит первый месяц учёта.</span></div>
-    <div><b>А если знакомый работает не на iiko?</b><span>Пока мы работаем только с iiko. Если он планирует переход, тоже пишите.</span></div>
+<section class="block vcard">
+  <div class="head"><p class="ey">Сколько можно заработать</p><h2>Ограничений нет</h2></div>
+  <div class="calc">
+    <div><b>15 000 ₽</b><span>за 1 знакомого</span></div>
+    <div><b>45 000 ₽</b><span>за 3 знакомых</span></div>
+    <div class="hi"><b>75 000 ₽</b><span>за 5 знакомых</span></div>
   </div>
+  <p class="soft" style="margin-top:12px;font-size:14px">15 000 ₽ за каждого, кто оплатит первый месяц.</p>
+</section>
+
+<section class="block" id="kto">
+  <div class="head"><p class="ey">Кому подходит</p><h2>Вы знаете рестораторов</h2></div>
+  <div class="mn">
+    <div class="mt"><span class="ml">Наши клиенты</span><span class="pain">Вы уже видите свои цифры</span><span class="res">и можете рассказать, как это устроено</span></div>
+    <div class="mt"><span class="ml">Рестораторы и управляющие</span><span class="pain">У коллег те же вопросы к учёту</span><span class="res">что были у вас</span></div>
+    <div class="mt"><span class="ml">Интеграторы iiko</span><span class="pain">Вы ставите iiko</span><span class="res">мы делаем так, чтобы её отчётам верили</span></div>
+    <div class="mt"><span class="ml">Поставщики и бухгалтеры</span><span class="pain">Вы каждый день видите проблемы ресторанов</span><span class="res">и знаете, кому нужна помощь</span></div>
+  </div>
+</section>
+
+<section class="block" id="komu">
+  <div class="head"><p class="ey">Кого рекомендовать</p><h2>Если знакомый говорит одно из этого</h2></div>
+  <div class="chips">
+    <span>«Инвентаризация не сходится»</span><span>«Прибыль есть, а денег нет»</span><span>«Долги поставщикам растут»</span><span>«Кажется, слишком много платим»</span><span>«Надоели таблицы в Excel»</span><span>«Открыли вторую точку, денег нет»</span><span>«Отчётам iiko никто не верит»</span><span>«Не понимаю, где прибыль»</span>
+  </div>
+  <p class="soft" style="margin-top:12px;font-size:14px">Мы работаем с заведениями на iiko.</p>
+</section>
+</div>
+
+<div class="band" id="poluchit"><div class="wrap"><section class="block">
+  <div class="head"><p class="ey">Что получит ваш знакомый</p><h2>Учёт, которому можно верить</h2><p class="lead">Всё в iiko, где уже работает его ресторан. До 15 числа он знает, сколько заработал, куда ушли деньги и сколько можно забрать себе.</p></div>
+  <div class="tariffs">
+    <div class="tcard"><p class="tname">Тариф «Учёт»</p><p class="tval">Порядок и ответ на вопрос «где прибыль»</p><p class="tpr">от 30 тыс ₽ <span>в месяц</span></p></div>
+    <div class="tcard hi"><p class="tname">Тариф «Управление»</p><p class="tval">Отчёт каждую неделю и разбор раз в месяц</p><p class="tpr">от 40 тыс ₽ <span>в месяц</span></p></div>
+    <div class="tcard"><p class="tname">Тариф «Финдиректор»</p><p class="tval">Мы работаем вашим финансовым директором</p><p class="tpr">от 55 тыс ₽ <span>в месяц</span></p></div>
+  </div>
+  <p class="honest">Мы не обещаем рост прибыли. Но делаем учёт настолько понятным, что разберётся даже ребёнок: сразу видно, что поменять, чтобы в следующем месяце рентабельность подросла. <b>Наши клиенты окупают нашу работу.</b></p>
+  <div class="cta-row"><a class="btn pri" href="/keisy">Кейсы клиентов</a><a class="btn sec" href="/keisy#tarify">Тарифы подробно</a></div>
+</section></div></div>
+
+<div class="wrap">
+<section class="block faqd" id="faq">
+  <div class="head"><p class="ey">Вопросы</p><h2>Коротко о главном</h2></div>
+  <details><summary>Сколько знакомых можно порекомендовать?</summary><p>Сколько угодно. 15 000 ₽ за каждого, кто начнёт работать с нами.</p></details>
+  <details><summary>Когда я получу деньги?</summary><p>После того, как знакомый оплатит первый месяц учёта.</p></details>
+  <details><summary>А если знакомый работает не на iiko?</summary><p>Пока мы работаем только с iiko. Если он планирует переход, тоже пишите.</p></details>
 </section>
 
 <section class="contact-block" id="kontakt">
@@ -188,6 +380,7 @@ footer img{height:36px;width:auto}
   <h2>Напишите нам в Telegram</h2>
   <div class="tg"><a class="handle" href="https://t.me/finrest_sup" target="_blank" rel="noopener">@finrest_sup</a></div>
   <div class="tg"><span class="muted">Напишите слово</span><kbd id="kw">Партнёр</kbd><button class="copy" id="copy" type="button">Скопировать</button><span class="muted">и мы ответим в течение дня.</span></div>
+  <div class="cta-row"><a class="btn pri" href="https://t.me/finrest_sup" target="_blank" rel="noopener">Написать в Telegram</a></div>
   <p class="muted" style="font-size:15px">Владимир Гуськов, основатель ФинРест</p>
 </section>
 </div>

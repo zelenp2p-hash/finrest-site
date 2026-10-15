@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="description" content="Управленческий учёт и калькуляция ресторанов в iiko. Кейсы клиентов, тарифы, бесплатный разбор."><meta property="og:title" content="ФинРест: каждая цифра вашего ресторана станет понятной"><meta property="og:description" content="Кейсы клиентов, тарифы и бесплатный разбор ваших цифр."><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<html lang="ru"><head><meta charset="utf-8"><meta name="description" content="Управленческий учёт и калькуляция ресторанов в iiko. Кейсы клиентов, тарифы, реальный отчёт клиента."><meta property="og:title" content="ФинРест: каждая цифра вашего ресторана станет понятной"><meta property="og:description" content="Кейсы клиентов, тарифы и реальный отчёт клиента ваших цифр."><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ФинРест: результаты клиентов</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -249,6 +249,18 @@ details.open1[open]>summary .when-closed{display:none}
 .gdots{flex:1;display:flex;gap:6px;justify-content:center}
 .gd{width:8px;height:8px;border-radius:50%;border:0;padding:0;background:var(--rule);cursor:pointer}
 .gd.on{background:var(--gold);width:22px;border-radius:4px}
+.ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:700;font-size:16px;border-radius:12px;padding:14px 22px;line-height:1.2}
+.btn.pri{background:var(--gold);color:#fff}
+.btn.pri:hover{background:var(--gold-hi)}
+.btn.sec{border:1.5px solid currentColor;color:inherit}
+.cover .btn.sec{color:var(--on-green)}
+.btn.dark{background:var(--green);color:var(--on-green)}
+.cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.start{margin-top:18px;background:var(--sheet);border:1.5px solid var(--gold);border-radius:16px;padding:18px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;color:var(--ink)}
+.start b{font-family:var(--serif);font-size:20px}
+.start span{display:block;font-size:14px;color:var(--ink-2)}
+@media (max-width:520px){.btn{width:100%}}
 </style></head><body>
 
 <div class="top"><div class="wrap">
@@ -257,6 +269,7 @@ details.open1[open]>summary .when-closed{display:none}
     <a class="contact" href="https://t.me/finrest_sup" target="_blank" rel="noopener">Связаться</a>
   </div>
   <nav class="cnav" aria-label="Разделы">
+    <a href="#tarify"><b>Цены</b></a>
     <a href="#cennost">Что вы получите</a>
     <a href="#k6" data-case class="caps">ИНВЕНТАРИЗАЦИИ</a>
 <a href="#k1" data-case><b>Кейс 1.</b>4 ресторана</a>
@@ -265,7 +278,6 @@ details.open1[open]>summary .when-closed{display:none}
     <a href="#k4" data-case><b>Кейс 4.</b>Кофейня в ТЦ</a>
     <a href="#k5" data-case><b>Кейс 5.</b>Новый клиент</a>
     <a href="#itog">Итог</a>
-    <a href="#tarify">Тарифы</a>
     <a href="#kak">Как работаем</a>
   </nav>
 </div></div>
@@ -273,9 +285,10 @@ details.open1[open]>summary .when-closed{display:none}
 <main id="top">
 <div class="cover"><img class="mark" src="img/logo_emblem.png" alt=""><div class="wrap">
   <img class="full" src="img/logo_full.png" alt="ФинРест">
-  <p class="ey">Калькуляция и учёт заведений в iiko</p>
-  <h1>Каждая цифра вашего ресторана станет понятной</h1>
-  <p class="lead">Вы точно знаете, сколько зарабатываете, где теряете деньги и что сделать, чтобы зарабатывать больше. Учёт в порядке, а цифры на простом языке, без бухгалтерских терминов.</p>
+  <p class="ey">Учёт и калькуляция ресторанов в iiko</p>
+  <h1>Узнайте, сколько на самом деле зарабатывает ваш ресторан и где он теряет деньги</h1>
+  <p class="lead">Наведём порядок в калькуляции и учёте в iiko. Покажем реальную себестоимость блюд, списания и скрытые потери простым языком.</p>
+  <div class="ctas"><a class="btn pri" href="#tarify">Посмотреть цены</a><a class="btn sec" href="https://t.me/finrest_sup" target="_blank" rel="noopener">Написать в Telegram</a></div>
   <div class="facts">
     <div><b>30+</b><span>заведений уже работают с нами</span></div>
     <div><b>50+ млн ₽</b><span>выручки в месяц наши клиенты видят прозрачно</span></div>
@@ -287,16 +300,32 @@ details.open1[open]>summary .when-closed{display:none}
 <section class="block vcard" id="cennost">
   <div class="head"><p class="ey">Что вы получите</p><h2>Что изменится с первого месяца</h2></div>
   <ul class="vl2">
-    <li><b>Вы спокойны за учёт</b><span>каждый документ на месте, ни одной траты без чека</span></li>
-    <li><b>Вы меньше теряете</b><span>видите списания, недостачи, лишнюю себестоимость и деньги на складах</span></li>
-    <li><b>Вы знаете свою прибыль</b><span>до 15 числа: сколько заработали и сколько можно забрать себе</span></li>
-    <li><b>Вы управляете в моменте</b><span>расходы и себестоимость видны сейчас, а не в конце месяца</span></li>
-    <li><b>Вы растёте на реальных цифрах</b><span>решения без «не вижу» и «не понимаю»</span></li>
+    <li><b>Знаете, сколько заработали</b><span>и сколько можно забрать себе, до 15 числа</span></li>
+    <li><b>Видите, где теряете</b><span>списания, недостачи, лишняя себестоимость</span></li>
+    <li><b>Спокойны за учёт</b><span>каждый документ на месте</span></li>
   </ul>
-  <p class="soft" style="margin-top:10px;font-size:14px">Вам ничего не нужно менять: всё в iiko, где уже работает ваш ресторан.</p>
+  <p class="soft" style="margin-top:10px;font-size:14px">Ничего не нужно менять: всё в iiko, где уже работает ваш ресторан.</p>
+  <div class="cta-row"><a class="btn dark" href="#tarify">Сколько это стоит</a><a class="btn sec" href="#menu">Посмотреть кейсы</a></div>
 </section>
+</div>
+<div class="band" id="tarify"><div class="wrap"><section class="block">
+  <div class="head"><p class="ey">Тарифы</p><h2>Выберите, сколько контроля вам нужно</h2><p class="lead">Для сетей скидки до 20%. Переезд сети в iiko Chain входит в тариф.</p></div>
+  <div class="tariffs">
+    <div class="tcard"><p class="tname">Тариф «Учёт»</p><p class="tval">Порядок и ответ на вопрос «где прибыль»</p><p class="tpr">от 30 тыс ₽ <span>в месяц за заведение</span></p>
+      <ul class="tl"><li>Знаете, сколько ресторан заработал за месяц</li><li>Видите, куда ушли деньги</li><li>Понятные инвентаризации: что пропало и почему</li><li>Списания, потерянные чеки и все расходы как на ладони</li></ul>
+      <p class="tex">Пример: <a href="#k3" data-case>Кейс 3</a>, <a href="#k6" data-case>Инвентаризации</a></p></div>
+    <div class="tcard hi"><p class="tname">Тариф «Управление»</p><p class="tval">Каждое решение на цифрах</p><p class="tpr">от 40 тыс ₽ <span>в месяц за заведение</span></p>
+      <ul class="tl"><li>Всё из «Учёта»</li><li>Каждую неделю получаете развёрнутый отчёт об эффективности ресторана</li><li>Раз в месяц разбираете отчёты вместе с нами и получаете 3-5 задач на рост рентабельности</li></ul>
+      <p class="tex">Пример: <a href="#k2" data-case>Кейс 2</a>, <a href="#k4" data-case>Кейс 4</a></p></div>
+    <div class="tcard"><p class="tname">Тариф «Финдиректор»</p><p class="tval">Прибыль по плану</p><p class="tpr">от 55 тыс ₽ <span>в месяц за заведение</span></p>
+      <ul class="tl"><li>Всё из «Управления», плюс отчёт об эффективности каждый день</li><li>Себестоимость и списания под контролем каждую неделю</li><li>План прибыли на квартал и год, и вы видите, как он выполняется</li><li>Вы копите капитал, а не долги</li></ul>
+      <p class="tex">Пример: <a href="#k1" data-case>Кейс 1</a></p></div>
+  </div>
+  <div class="start"><div><b>Начните с «Учёт за 30 дней»</b><span>от 30 000 ₽: наведём порядок и покажем первые отчёты</span></div><a class="btn pri" href="https://t.me/finrest_sup" target="_blank" rel="noopener">Обсудить в Telegram</a></div>
+</section></div></div>
+<div class="wrap">
 <section class="block" id="menu">
-  <div class="head"><p class="ey">Кейсы клиентов</p><h2>Узнаёте свою ситуацию?</h2><p class="lead" style="font-size:16px">С этим пришли наши клиенты. Нажмите на карточку и посмотрите, что у них изменилось.</p></div>
+  <div class="head"><p class="ey">Кейсы клиентов</p><h2>Узнаёте свою ситуацию?</h2><p class="lead" style="font-size:16px">Нажмите на свою ситуацию и посмотрите, что изменилось у клиента.</p></div>
   <div class="mn">
     <a class="mt" href="#k6" data-case><span class="ml">ИНВЕНТАРИЗАЦИИ · бар кофейни</span><span class="pain">«Инвентаризация уходит то в недостачи, то в излишки»</span><span class="res"><span class="ok">✓</span>владелец увидел 42 тыс ₽ ошибок за итогом «в ноль»</span><span class="go">Смотреть, что изменилось <i>→</i></span></a>
     <a class="mt" href="#k1" data-case><span class="ml">Кейс 1 · 4 ресторана</span><span class="pain">«Деньги уходят, а куда, непонятно: чеков нет»</span><span class="res"><span class="ok">✓</span>трат без чеков стало в 3,4 раза меньше</span><span class="go">Смотреть, что изменилось <i>→</i></span></a>
@@ -307,7 +336,7 @@ details.open1[open]>summary .when-closed{display:none}
   </div>
   <div class="mlinks">
     <a href="#itog">Окупается ли это? <i>→</i></a>
-    <a href="#tarify">Тарифы от 30 тыс ₽ <i>→</i></a>
+    <a href="https://t.me/finrest_sup" target="_blank" rel="noopener">Написать нам <i>→</i></a>
     <a href="#kak">Что нужно от вас <i>→</i></a>
   </div>
 </section>
@@ -517,22 +546,10 @@ details.open1[open]>summary .when-closed{display:none}
       <p class="pay">Одна инвентаризация показала больше, чем стоит месяц учёта: <em>35 тыс ₽</em></p></div>
   </div>
   <p class="soft" style="margin-top:12px;font-size:14px">Указана фактическая стоимость нашей работы у этих клиентов</p>
+  <div class="cta-row"><a class="btn pri" href="https://t.me/finrest_sup" target="_blank" rel="noopener">Хочу так же</a><a class="btn sec" href="#tarify">Цены</a></div>
 </section>
 </div>
-<div class="band" id="tarify"><div class="wrap"><section class="block">
-  <div class="head"><p class="ey">Тарифы</p><h2>Выберите, сколько контроля вам нужно</h2><p class="lead">Для сетей скидки до 20%. Переезд сети в iiko Chain входит в тариф.</p></div>
-  <div class="tariffs">
-    <div class="tcard"><p class="tname">Тариф «Учёт»</p><p class="tval">Порядок и ответ на вопрос «где прибыль»</p><p class="tpr">от 30 тыс ₽ <span>в месяц за заведение</span></p>
-      <ul class="tl"><li>Знаете, сколько ресторан заработал за месяц</li><li>Видите, куда ушли деньги</li><li>Понятные инвентаризации: что пропало и почему</li><li>Списания, потерянные чеки и все расходы как на ладони</li></ul>
-      <p class="tex">Пример: <a href="#k3" data-case>Кейс 3</a>, <a href="#k6" data-case>Инвентаризации</a></p></div>
-    <div class="tcard hi"><p class="tname">Тариф «Управление»</p><p class="tval">Каждое решение на цифрах</p><p class="tpr">от 40 тыс ₽ <span>в месяц за заведение</span></p>
-      <ul class="tl"><li>Всё из «Учёта»</li><li>Каждую неделю получаете развёрнутый отчёт об эффективности ресторана</li><li>Раз в месяц разбираете отчёты вместе с нами и получаете 3-5 задач на рост рентабельности</li></ul>
-      <p class="tex">Пример: <a href="#k2" data-case>Кейс 2</a>, <a href="#k4" data-case>Кейс 4</a></p></div>
-    <div class="tcard"><p class="tname">Тариф «Финдиректор»</p><p class="tval">Прибыль по плану</p><p class="tpr">от 55 тыс ₽ <span>в месяц за заведение</span></p>
-      <ul class="tl"><li>Всё из «Управления», плюс отчёт об эффективности каждый день</li><li>Себестоимость и списания под контролем каждую неделю</li><li>План прибыли на квартал и год, и вы видите, как он выполняется</li><li>Вы копите капитал, а не долги</li></ul>
-      <p class="tex">Пример: <a href="#k1" data-case>Кейс 1</a></p></div>
-  </div>
-</section></div></div>
+
 
 <div class="wrap">
 <section class="block" id="kak">
@@ -545,16 +562,18 @@ details.open1[open]>summary .when-closed{display:none}
     <div class="card"><h3>Отчёты</h3><p style="font-size:15px;color:var(--ink-2)">Прибыль, движение денег и баланс до 15 числа</p></div>
   </div>
   <p class="you">От вас нужно только две вещи: <b>доступ в iiko</b> и <b>фото документов</b> в наш Telegram-бот.</p>
+  <div class="cta-row"><a class="btn dark" href="https://t.me/finrest_sup" target="_blank" rel="noopener">Начать с «Учёт за 30 дней»</a></div>
 </section>
 </div>
 
 <div class="wrap">
 <section class="contact-block" id="kontakt">
   <p class="ey">Связаться</p>
-  <h2>Узнайте, где теряет деньги ваш ресторан</h2>
-  <p class="lead">Бесплатный разбор на ваших цифрах, 35 минут. Вы увидите, куда уходит прибыль.</p>
+  <h2>Посмотрите, как это выглядит у реального клиента</h2>
+  <p class="lead">Напишите нам слово «Отчёт», и мы пришлём реальный отчёт клиента ФинРест, названия скрыты. Учёт за 30 дней от 30 000 ₽.</p>
   <div class="tg"><a class="handle" href="https://t.me/finrest_sup" target="_blank" rel="noopener">@finrest_sup</a><span class="muted">в Telegram</span></div>
-  <div class="tg"><span class="muted">Напишите слово</span><kbd id="kw">Разбор</kbd><button class="copy" id="copy" type="button">Скопировать</button><span class="muted">и получите ответ в течение дня.</span></div>
+  <div class="tg"><span class="muted">Напишите слово</span><kbd id="kw">Отчёт</kbd><button class="copy" id="copy" type="button">Скопировать</button><span class="muted">и получите ответ в течение дня.</span></div>
+  <div class="cta-row"><a class="btn pri" href="https://t.me/finrest_sup" target="_blank" rel="noopener">Написать в Telegram</a></div>
   <p class="muted" style="font-size:15px">Владимир Гуськов, основатель ФинРест</p>
 </section>
 </div>
